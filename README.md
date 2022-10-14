@@ -4,8 +4,204 @@
 # Week01
 放假(中秋節)
 
-
 # Week02
+
+## step01-1_介紹課程相關資訊-What, Why, How 學什麼、為什麼學、如何學
+
+## step01-2_介紹寫程式時,會用到鍵盤各式符號
+
+## step02-1_介紹為什麼要學程式設計、試用瘋狂程設
+
+## step02-2_利用瘋狂程設, 複習Hello World程式, 並介紹課本第二大頁printf()的%d插入數值
+
+```cpp
+///File-New-Empty 空白檔案(滾輪放大)Ctrl-Shift-N
+///File-Save file as另存week02-1.cpp 會變色
+#include <stdio.h>
+int main()
+{
+    printf("Hello World\n");
+}
+///寫好程式,存檔。齒輪+三角形Build&Run
+```
+
+
+```cpp
+///File-New-Empty 空白檔案(滾輪放大)Ctrl-Shift-N
+///File-Save file as另存week02-2.cpp 會變色
+#include <stdio.h>
+int main()
+{
+    printf("Hello World\n");
+    printf("Hello%dWorld\n", 33);
+}
+```
+## step03-1_介紹課本的int整數變數的盒子的概念, 並試著改變裡面的值, 利用 printf()印出來
+
+
+```cpp
+///初學者最適合學習程的工具 CodeBlocks
+//斜線 右上左下 2條,註解 解釋
+///這個比較清楚
+#include <stdio.h>
+int main()
+{
+    int a;///是個整數
+    int b;///也是個整數
+    a=9;
+    printf("現在的a是%d\n", a);
+    a=77;
+    printf("現在的a是%d\n", a);
+}
+```
+
+```cpp
+///File-New-Empty空白檔案
+///File-Save file As 另存新檔 week02-3.cpp
+///初學者最適合學習程的工具 CodeBlocks
+//斜線 右上左下 2條,註解 解釋
+///這個比較清楚
+#include <stdio.h>
+int main()
+{
+    int a;///是個整數
+    int b;///也是個整數
+    a=9;
+    printf("現在的a是%d\n", a);
+    a=77;
+    printf("現在的a是%d\n", a);
+}
+///寫完程式,按 Build&Run (齒輪+三角形)
+```
+
+## step03-2_利用實習課的平方和的程式, 介紹下週的考試題目-兩數相加
+
+```cpp
+///File-New-Empty 空白檔案(滾輪放大)Ctrl-Shift-N
+///File-Save file as另存week02-2.cpp 會變色
+#include <stdio.h>
+int main()
+{
+    printf("請輸入2個數字:");
+    int a, b;
+    scanf("%d%d", &a, &b);
+    printf("%d", a+b );
+}
+```
+
+
+# Week03
+
+## step01-0_考試前複習
+
+## step01-1_介紹學習的技巧
+
+## step01-2_帶同學註冊GitHub帳號
+1. GitHub.com 註冊, 換大頭貼 
++repo程式倉庫
+
+## step02-1_帶同學建立GitHub的程式倉庫,將上週的程式寫好後, 上傳到程式倉庫裡
+
+
+## step02-2_介紹加減乘除運算,並解釋餘數的運算
+
+```cpp
+///File-New-Empty 空白檔案(滾輪放大)Ctrl-Shift-N
+///File-Save file as另存week03-1.cpp 會變色
+#include <stdio.h>
+
+int main()
+{
+    printf("請輸入2個數字:");
+
+    int a, b;
+    scanf( "%d%d", &a, &b );
+    printf(加 %d 得到 %d\n", a, b, a+b );
+    printf("%d 減 %d 得到 %d\n", a, b, a-b );
+    printf("%d 乘 %d 得到 %d\n", a, b, a*b );
+    printf("%d 除 %d 得到 %d\n", a, b, a/b );
+    printf("%d 除 %d 的餘數 %d d\n", a, b, a%b );
+}
+```
+
+## step02-3_介紹比大小, 並配合 if(判斷)進行實作
+
+```cpp
+///File-New-Empty 空白檔案(滾輪放大)Ctrl-Shift-N
+///File-Save file as另存week03-2.cpp 會變色
+///比大小
+#include <stdio.h>
+
+int main()
+{
+    printf("請輸入1個數字:");
+
+    int n;
+    scanf("%d", &n);
+    if( n>10 ) printf("大於10\n");
+    if( n<10 ) printf("小於10\n");
+    if( n==10 ) printf("等於10\n");
+}
+```
+
+## step03-1_介紹下週考試題目-判斷奇數偶數
+
+```cpp
+///不要寫在這裡,但要copy過來 (下週的考試)
+///判斷 奇數、偶數
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	if( n%2 == 0 ) printf("even");
+	else printf("odd");
+}
+```
+
+
+## step03-2_利用程式來解決問題, 有網友問某正整數,對8除餘6,對9除餘7,對15除餘13, 利用程式配合for(迴圈)找出來
+
+```cpp
+///某正整數
+///用8除餘6
+///用9除餘7
+///用15除餘13
+///Step01: 先印出餘數
+#include <stdio.h>
+int main()
+{
+    printf("請輸入1個數字:");
+    int n;
+    scanf("%d", &n);
+    printf("用8除餘%d\n" , n%8 );
+    printf("用9除餘%d\n" , n%9 );
+    printf("用15除餘%d\n" , n%15 );
+}
+```
+
+```cpp
+///某正整數
+///用8除餘6
+///用9除餘7
+///用15除餘13
+///Step01: 先印出餘數 Step02試所有的數字
+#include <stdio.h>
+int main()
+{
+    for( int n=1; n<2000; n++ ) { ///會試很多數字
+        if( n%8==6 && n%9==7 && n%15==13 ) {
+            printf("\n現在的數字是:%d\n", n);
+            printf("用8除餘%d\n" , n%8 );
+            printf("用9除餘%d\n" , n%9 );
+            printf("用15除餘%d\n" , n%15 );
+        }
+    }
+}
+```
+## step03-3_上傳到GitHub
+
 
 # Week04
 
