@@ -7,6 +7,95 @@
 
 # Week02
 
+# Week04
+
+## step01-0_考試前複習「奇偶數」的寫法,及常見錯誤
+
+## step01-1_閏年是什麼呢 2月29天。其實是一年365天不精確, 365.25也不精確, 所以有 4年一閏、100年不閏、400年又閏的規則。為了讓程式的思考簡單, 老師教你倒過來想, 先想稀有的400年,再100年,再4年,再剩下。
+
+```cpp
+///閏年
+#include <stdio.h>
+int main()
+{
+    printf("請輸入西元年:");
+    int n;
+    scanf("%d", &n);
+    if( n%400==0 ) printf("閏年");
+    else if( n%100==0 ) printf("普通年/平年");
+    else if( n%4==0 ) printf("閏年");
+    else printf("普通年/平年");
+}
+```
+
+## step01-2_接下來在瘋狂程設 練習 下週的考試題目「閏年」,只要印出 Yes 或 No, 老師用了簡單的寫法,及比較有難度但行數較少的寫法
+
+```cpp
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	if( n%400==0 ) printf("Yes");
+	else if( n%100==0 ) printf("No");
+	else if( n%4==0 ) printf("Yes");
+	else printf("No");
+}
+```
+
+## step02-1_為了熟悉for(迴圈),所以先試電腦從0開始的版本
+
+```cpp
+///for(迴圈)
+#include <stdio.h>
+int main()
+{          ///這裡寫4, i:0,1,2,3 共4個
+    for( int i=0; i<4; i++ ){ ///電腦從0開始
+        printf("印出%d\n", i );
+    }
+}
+```
+
+## step02-2_有同學打字比較慢, 所以老師教大家了解鍵盤。在打字時,左手食指在f,右手食指在j, 先熟悉中間,再熟悉上面、下面的鍵, 再用 keyboard ninja來練習
+
+## step03-1_了解for迴圈後, 我們再來思考人類熟悉的版本, 從1開始數。了解 電腦的迴圈後, 我們再來熟悉人類的迴圈 for(int i=1; i小於等於4; i++) 會執行4次。人類的部分比較直覺, 但是程式碼看起來會長一點點。
+
+```cpp
+///for(迴圈)
+#include <stdio.h>
+int main()
+{          ///這裡寫4, i:0 1 2 3 共4個
+    for( int i=0; i<4; i++ ){ ///電腦從0開始
+        printf("印出%d\n", i );
+    }
+    for( int i=1; i<=4; i++ ){ ///人類從1開始
+        printf("人類的版本,印出:%d\n", i );
+    }          ///寫4, i: 1 2 3 4 共4個
+}
+```
+
+## step03-2_練習排版 Allmen (ANSI) 與 K&R
+
+```cpp
+///for(迴圈)
+#include <stdio.h>
+int main() ///Allmen (ANSI)
+{
+    ///這裡寫4, i:0 1 2 3 共4個
+    for( int i=0; i<4; i++ )   ///電腦從0開始
+    {
+        printf("印出%d\n", i );
+    }
+    for( int i=1; i<=4; i++ )   ///人類從1開始
+    {
+        printf("人類的版本,印出:%d\n", i );
+    }          ///寫4, i: 1 2 3 4 共4個
+}
+```
+
+## step03-3_上傳GitHub
+
+
 # Week05
 
 ## step01-0_考前復習_閏年
