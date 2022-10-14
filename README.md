@@ -4,7 +4,150 @@
 # Week01
 放假(中秋節)
 
+
 # Week02
+
+# Week05
+
+## step01-0_考前復習_閏年
+
+## step01-1_從if(判斷)出發, 修改成while(迴圈)一直執行
+
+```cpp
+///while(迴圈)
+#include <stdio.h>
+int main()
+{
+    int a=10;
+
+    ///只執行1次,只印1行
+    ///if( a>0 ) printf("a:%d a>0\n" , a );
+
+    while( a>0 ) printf("a:%d a>0\n" , a );
+    ///一直執行
+}
+```
+
+## step01-2_剛剛的while(迴圈)沒什麼變化,所以我們每次印完後 a-- 它就不會瘋狂執行,而是執行5次就停接著老師介紹流程圖。
+
+```cpp
+///while(迴圈)
+#include <stdio.h>
+int main()
+{
+    int a=5;
+    while( a>0 ){
+        printf("a:%d a>0\n" , a );
+        a-- ;
+    }
+}
+```
+
+## step02-1_介紹完while(迴圈),回來介紹課本第3章第2個主題for(迴圈), 以前一個程式為基礎,改用for(迴圈)的語法,做一模一樣的事 
+
+```cpp
+#include <stdio.h>
+int main()
+{
+    ///int a=5;
+    ///while( a>0 ){
+    ///    printf("a:%d a>0\n" , a );
+    ///    a-- ;
+    ///}
+    for( int a=5 ; a>0 ; a-- ){
+        printf("a:%d a>0\n" , a );
+    }
+}
+```
+
+## step02-2_接下來介紹for(迴圈) 的基礎型(電腦從0開始,精簡)、進階型(人類從1開始數,程式多一點點)
+
+```cpp
+#include <stdio.h>
+int main()
+{
+    for( int i=0; i<5; i++){ ///迴圈基本型: 電腦,精簡
+        printf("電腦從0開始數, i:%d\n", i);
+    }
+    for( int i=1; i<=5; i++){ ///迴圈進階型: 人類,多一點點
+        printf("人類從1開始數多一點點, i:%d\n", i);
+    }
+    for( int i=5; i>0; i--){ ///迴圈倒過來型
+        printf("倒過來的迴圈, i:%d\n", i);
+    }
+}
+```
+
+## step02-2b_迴圈基本型、進階型、倒過來型
+
+```cpp
+#include <stdio.h>
+int main()
+{  //You need to use Advanced Human
+	for(int i=1; i<=9; i++){
+		for(int j=1; j<=9; j++){
+			printf("%d*%d=%2d ", j, i, i*j );
+		}
+		printf("\n");
+	}
+}
+```
+
+## step03-1_下週考試要考九九乘法表,會用到今天第二節課教的for迴圈進階型,而且還用2次, 一個是左邊的迴圈,決定有幾行。一個是右邊的迴圈,決定一行有幾個。在印的時候,要小心是要印哪一個數字
+
+```cpp
+///(1) 畫星星, 口訣: 左手i, 右手j
+#include <stdio.h>
+int main()
+{   ///印 5 4 3 2 1 倒過來的迴圈
+/// for(int i=0; i<5; i++){ //(2)迴圈基礎型
+    for(int i=5; i>0; i--){ ///(3) 左手i建出鷹架
+        for(int j=0; j<i; j++){///(2)迴圈基礎型
+            printf("*"); ///逐一畫星星
+        }
+        ///printf("%d個星星\n", i);///(3)鷹架
+        printf("\n"); ///跳行
+    }
+}
+```
+
+## step03-2_兩層迴圈的練習中,最常使用「畫星星」來做, 老師帶大家,利用迴圈的基本型、進階型、倒過來型,方便理解怎麼做出鷹架,便能把程式寫出來。
+
+```cpp
+#include <stdio.h>
+int main()
+{
+    int N;
+    scanf("%d", &N);
+    for(int i=N-1; i>=0;i--){
+        int space = i;
+        int star = (N-i)*2-1;
+        for(int k=0; k<space; k++) printf(" ");
+        for(int k=0; k<star; k++) printf("*");
+        printf("\n");
+        ///printf("%d空格 %d星星\n", i, N-i);
+    }
+
+}
+```
+
+另外有同學問另一題畫星星, 也做示範
+
+```cpp
+#include <stdio.h>
+int main()
+{
+    int N;
+    scanf("%d", &N);
+    for(int i=1; i<=N; i++){
+        int space=N-i, star = i*2-1;
+        for(int k=0; k<space; k++) printf(" ");
+        for(int k=0; k<star; k++) printf("*");
+        printf("\n");
+        ///printf("space:%d star:%d\n", N-i, i*2-1);
+    }
+}
+```
 
 # Week06
 
