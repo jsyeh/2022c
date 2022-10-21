@@ -575,3 +575,162 @@ int main()
 }
 ```
 ## step03-2_介紹如何利用 Markdown 語法, 修改 README.md 的內容, 包括大標題、小標題, 尤其是關於程式碼的部分
+
+# Week07
+
+## step01-0_考前複習畫星星(金字塔),並講解容易出錯的地方
+
+## step01-0b_考後複習,講解同學出錯的地方
+
+## step01-1_今天上課,復習之前教過的int整數型別, 只有32-bit,最多只能裝2,147,483,647, 所以很長很長的整數, 要用 long long int,
+
+```cpp
+///型別 long long int
+#include <stdio.h>
+int main()
+{///int 整數 可以裝 32-bit 的整數
+    int n = 1234567812345678;
+    printf("%d\n", n);///出事了
+    ///最大只能裝這麼大 2,147,483,647
+
+    long long int a = 1234567812345678;
+    printf("%lld\n", a);
+}
+/// Intel    vs. AMD 大戰
+/// x86         照著做 (32位元電腦)
+/// 20年前,是時候發明64位元電腦
+/// IA64新架構  AMD64要相容舊架構x86
+///             (大勝)
+/// x64 == intel64 == amd64 一樣
+```
+
+## step02-1_有了long long int 那我們便能回來複習最大公因數了。數字範圍再大一點, 結果要算好久。讀寫資料時要用%lld 是小寫的LLD,不是數字11d哦
+
+```cpp
+///複習最大公因數 long long int 版本
+
+#include <stdio.h>
+int main()
+{
+    long long int a, b; ///很長很長的整數 a, b
+    scanf("%lld%lld", &a, &b);///要用小寫的LLD
+
+    long long int ans;
+    ///去試 1,2,3,... a 看能能不能和 a b 都整除
+    for(long long int i = 1; i<=a; i++){ ///好慢哦!!!
+        if( a%i==0 && b%i==0 ) ans = i;
+    }
+    printf("答案是:%lld\n", ans);
+}
+```
+
+## step02-2_因為前面的暴力法真的很慢,所以我們要改用輾轉相除法。上週做過, 今天再用 long long int 很長很長的整數 再做一次。口訣是 老大a, 老二b 可以算出 老三c=a%b, 如果老三c是0, 老二b就是答案。輾轉的意是,是老二變老大, 老三變老二, 利用while(1)持續去做。
+
+```cpp
+///複習最大公因數 long long int 版本
+///輾轉相除法: 老大、老二、老三
+#include <stdio.h>
+int main()
+{
+    long long int a, b, c;///很長很長的整數 a,b,c
+    scanf("%lld%lld", &a, &b );
+
+    while(1){
+        c = a%b;
+        printf("%lld %lld %lld\n", a, b, c);
+        if(c==0) break;
+        a=b;
+        b=c;
+    }
+    printf("答案是:%lld\n", b);
+}
+```
+
+## step03-1_今天為了教剝皮法, 老師先介紹資工系阿平老師出的題目,把數字3位一逗號。再介紹十進位的每一位數取出來,再介紹利用while(迴圈)的方法, 最後還有示範十進位轉二進位。
+
+```cpp
+///剝皮法
+#include <stdio.h>
+int main()
+{
+    int n=1234;
+    ///如果你有1234元,請問有張1000元
+    printf("一千元有:%d張\n", n/1000 );
+    n = n % 1000; ///餘 剩下的
+    printf("一百元有:%d張\n", n/100 );
+    n = n % 100;
+    printf("十元有:%d枚\n", n/10 );
+    n = n % 10;
+    printf("一元有:%d枚\n", n);
+}
+```
+
+```cpp
+///倒過來剝皮
+#include <stdio.h>
+int main()
+{
+        int n=123456789;
+        printf("個位數是%d\n", n%10 );
+        n = n / 10;
+
+        printf("個位數是%d\n", n%10 );
+        n = n / 10;
+
+        printf("個位數是%d\n", n%10 );
+        n = n / 10;
+
+        printf("個位數是%d\n", n%10 );
+        n = n / 10;
+
+        printf("個位數是%d\n", n%10 );
+        n = n / 10;
+
+        printf("個位數是%d\n", n%10 );
+        n = n / 10;
+
+        printf("個位數是%d\n", n%10 );
+        n = n / 10;
+
+        printf("個位數是%d\n", n%10 );
+        n = n / 10;
+
+        printf("個位數是%d\n", n%10 );
+        n = n / 10;
+
+        printf("個位數是%d\n", n%10 );
+        n = n / 10;
+}
+```
+
+```cpp
+///倒過來剝皮
+#include <stdio.h>
+int main()
+{
+    int n=1234;
+
+    while( n>0 ){
+        printf("個位數是%d\n", n%10 );
+        n = n / 10;
+    }
+}
+```
+
+```cpp
+///倒過來剝皮
+#include <stdio.h>
+int main()
+{
+    printf("請輸入數字: ");
+    int n;
+    scanf("%d", &n);
+    while( n>0 ){
+        printf("%d\n", n%2 );
+        n = n / 2;
+    }
+}
+```
+
+## step03-2_老師介紹GitHub可以做網站,有專屬的網址(之後帳號名可以再改, 網址也會再改, 記得倉庫名要與帳號名前面相同。請試著用GitHub做出自己的網站。
+
