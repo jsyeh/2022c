@@ -833,3 +833,112 @@ int main()
 
 ## step03-2_介紹幾題實習的題目
 
+
+# Week11
+
+## step01-0_考試「列出質數」考前複習 
+```cpp
+//Step01: 大迴圈, 列很多數字
+//Step02: 小迴圈, 判斷質數
+
+#include <stdio.h>
+int main()
+{
+	int a;
+	scanf("%d", &a);
+	//Step01: 大迴圈, 列很多數字
+	for( int n=2; n<=a; n++){
+		//Step02: 小迴圈, 判斷質數
+			int bad=0;
+			for(int i=2; i<n; i++){
+				if( n%i==0 ) bad=1;
+			}
+			if(bad==0) printf("%d ", n);
+	}
+}
+```
+
+## step01-1_今天主題是陣列array,照著課本練習陣列宣告、陣列宣告順便給值、把值拿出來用
+
+```cpp
+///Step1-1
+#include <stdio.h>
+int main()
+{
+    ///int a;
+    ///int a[4];///有4格
+    int a[4] = {10, 20, 30, 40};
+
+    printf("a[0]:%d\n", a[0] );
+    printf("a[1]:%d\n", a[1] );
+    printf("a[2]:%d\n", a[2] );
+    printf("a[3]:%d\n", a[3] );
+
+}
+```
+
+## step02-1_陣列很有用, 像找質數時, 可以用篩子法快速把全部質數找出來。不過程式一開始不要教太難, 我們先用 for迴圈 + 陣列, 讓大家熟悉陣列的 [i] 方括號裡面是怎麼放的、怎麼正著印、倒著印
+
+```cpp
+#include <stdio.h>
+int main()
+{
+    int a[4] = {10, 20, 30, 40};
+        ///i: 0 1 2 3
+    for(int i=0; i<4; i++){ ///電腦的迴圈,0開始
+        printf("a[%d]: %d\n", i, a[i] );
+    }
+        ///i: 3 2 1 0
+    for(int i=3; i>=0; i--){ ///倒過來的迴圈
+        printf("%d ", a[i] );
+    }
+
+}
+```
+
+## step02-2_百數反印,讓同學自己寫寫看,有加分
+```cpp
+#include <stdio.h>
+int main()
+{
+	int a[100];  //i: 0...99
+	for(int i=0; i<100; i++){
+		scanf("%d", &a[i] );
+	}
+	for(int i=99; i>=0; i--){
+		printf("%d\n", a[i] );
+	}
+}
+```
+
+## step03-1_古希臘數學家發明篩子法、發現地球周長
+
+## step03-2_Git指令上傳GitHub
+Git指令
+
+1. 安裝 Git軟體, 開啟 Git Bash
+	- 1.1. Bash 在 Mac, Linux, Windows 都可用
+	- 1.2. 要在小黑下指令
+	- 1.3. 可以Ctrl-Wheel放大
+2. GitHub雲端 程式倉庫 要clone複製下來
+	- 2.1. ex. https://github.com/jsyeh/2022c
+	- 2.2. https://github.com/你的帳號/倉庫名 網址複製好
+	- cd desktop
+	- git clone https://github.com/jsyeh/2022c
+3. 我們可以利「檔案總管」來整理你的程式倉庫
+	- 檔名有錯的, 就改吧!
+	- 想要整理很多目錄, 就改吧!
+4. 想要更新你現在的倉庫 (1) 要在目錄裡下指令: git status 和 git add .
+	- 先檢查你的目錄對不對
+	- cd 2022c 進入你的目錄裡
+	- git status 看到一堆紅色
+	- git add . (小心空格, 靜靜的, 會把紅色的,加到你的帳冊裡
+	- git status 變成綠色
+5. 要簽名 commit 確認你的修改
+	- 5.0. (第一次使用時, 要設定你的 user.email 及 user.name
+	- 5.0. git config --global user.email jsyeh@mail.mcu.edu.tw
+	- 5.0. git config --global user.name jsyeh
+	- 5.1. git commit -m "修改目錄"
+6. git push 推送上雲端
+	- git push 會跳出小窗, 請你用 browser認證
+	- 就成功了
