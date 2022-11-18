@@ -942,3 +942,213 @@ Git指令
 6. git push 推送上雲端
 	- git push 會跳出小窗, 請你用 browser認證
 	- 就成功了
+
+
+# Week11
+
+## step01-0_今天考試「百數反印」想考大家對於陣列、迴圈的使用熟悉度。考前複習、考後講解同學錯的狀況。
+
+
+## step01-1_想要將3個數字從小到大排好時,我們需要一個技巧-交換, 老師用瓶子裡面裝 a=90咖啡, b=80清水,做示範, 需要另一個臨時的空瓶 temp 幫忙。 int temp=a; a=b; b=temp; 有點押韻的寫法。
+
+```cpp
+///兩數想交換,口訣: int temp=a; a=b; b=temp;
+#include <stdio.h>
+int main()
+{
+    int a=90, b=80;
+    printf("a:%d b:%d\n", a, b);
+
+    int temp = a;
+    a = b;
+    b = temp;
+
+    printf("a:%d b:%d\n", a, b);
+
+}
+```
+
+## step01-2_有了前面的交換,便能試試三數排序的部分,使用的口訣是「比大小,不對就交換」, 先把 a b 比, 再把 b c 比, 最重的已經沉到最下面, 所以再加上 a b 比, 就可從小到大排好了。
+
+其實第04週的實習課, 有寫過三數排序, 那時候用了 6個 if判斷
+```cpp
+///2數 => 2種結果
+///3數 => 6種結果
+///4數 => 24種結果
+///5數 => 120種結果
+
+#include <stdio.h>
+int main()
+{
+	int a, b, c;
+	scanf("%d %d %d", &a, &b, &c);
+	if( a>=b && b>=c ) printf("max:%d\nmid:%d\nmin:%d", a, b, c);
+	else if( a>=c && c>=b ) printf("max:%d\nmid:%d\nmin:%d", a, c, b);
+	else if( b>=a && a>=c ) printf("max:%d\nmid:%d\nmin:%d", b, a, c);
+	else if( b>=c && c>=a ) printf("max:%d\nmid:%d\nmin:%d", b, c, a);
+	else if( c>=a && a>=b ) printf("max:%d\nmid:%d\nmin:%d", c, a, b);
+	else if( c>=b && b>=a ) printf("max:%d\nmid:%d\nmin:%d", c, b, a);
+}
+```
+
+下面則是今天想要用的方法, 希望能有個一致的程式
+
+```cpp
+///三數排序
+///口訣: 比大小,不對就交換
+#include <stdio.h>
+int main()
+{
+    int a=90, b=80, c=70;
+    if( a>b ){///希望a輕,但反過來了
+        int temp=a;///不對就交換
+        a=b;
+        b=temp;
+    }
+    if( b>c ){
+        int temp=b;
+        b=c;
+        c=temp;
+    }
+    ///把最重的放到c了。剩下 上面的ab再比一次
+    if( a>b ){
+        int temp=a;///不對就交換
+        a=b;
+        b=temp;
+    }
+    printf("a:%d b:%d c:%d", a, b, c);
+}
+```
+
+## step02-1_其實第4週實習課有教過「3數排序」,那時候就用了6個if(判斷),雖然簡單,但很多重複的程式碼。如果我們使用step01-2的程式,好像只要比相鄰的、不對就交換,程式碼能簡化。本題試著做10數排序,使用攝影師拍團體照時調整高低的方法,口訣「從左到右巡一輪,兩兩比較,不對就交換」其中巡一輪時, 迴圈有點奇怪,只要比9次。請用CodeBlocks實作 week11-3.cpp 執行, 會發現最肥的數字慢慢移到右邊了。
+
+```cpp
+///2數 => 2種結果
+///3數 => 6種結果
+///4數 => 24種結果
+///5數 => 120種結果
+///10數排序....
+///攝影師在拍團體照時,調整高低的方法
+///口訣: 從左到右巡一輪, 兩兩比較, 不對就交換
+
+#include <stdio.h>
+///       a[0] a[1] ...                      a[9]
+int a[10]={90, 80, 70, 60, 50, 40, 30, 20, 10, 0};
+
+int main()
+{
+    for(int i=0; i<10; i++) printf("%d ", a[i] );
+    printf("\n");
+
+    for(int i=0; i<10-1; i++){
+        if( a[i] > a[i+1] ){ ///希望左小右大,但不對....
+            int temp = a[i]; ///不對就交換
+            a[i] = a[i+1];
+            a[i+1] = temp;
+        }
+    }
+
+    for(int i=0; i<10; i++) printf("%d ", a[i] );
+    printf("\n");
+}
+```
+
+## step02-2_前面的程式,只把「最肥的數字」移到右邊,因此,我們就用 Ctrl-C 的方法 貼很多次, 並逐一印出來,觀察它的變化,越排越多都排好了
+
+```cpp
+#include <stdio.h>
+int a[10]={90, 80, 70, 60, 50, 40, 30, 20, 10, 0};
+
+int main()
+{
+
+    for(int i=0; i<10; i++) printf("%d ", a[i] );///印出來
+    printf("\n");
+
+    for(int i=0; i<10-1; i++){ ///巡一輪
+        if( a[i] > a[i+1] ){ ///希望左小右大,但不對....
+            int temp = a[i]; ///不對就交換
+            a[i] = a[i+1];
+            a[i+1] = temp;
+        }
+    }
+    for(int i=0; i<10; i++) printf("%d ", a[i] );///印出來
+    printf("\n");
+
+    for(int i=0; i<10-1; i++){ ///巡一輪
+        if( a[i] > a[i+1] ){ ///希望左小右大,但不對....
+            int temp = a[i]; ///不對就交換
+            a[i] = a[i+1];
+            a[i+1] = temp;
+        }
+    }
+    for(int i=0; i<10; i++) printf("%d ", a[i] );///印出來
+    printf("\n");
+
+    for(int i=0; i<10-1; i++){ ///巡一輪
+        if( a[i] > a[i+1] ){ ///希望左小右大,但不對....
+            int temp = a[i]; ///不對就交換
+            a[i] = a[i+1];
+            a[i+1] = temp;
+        }
+    }
+    for(int i=0; i<10; i++) printf("%d ", a[i] );///印出來
+    printf("\n");
+
+}
+```
+
+## step03-1_泡泡排序法,其實就是把剛剛的程式,重覆做很多次。因為是重覆的程式碼, 所以不需要 Ctrl-C 來複製, 而是直接用 for(int k=0; k小於「重覆的次數」; k++){ } 來重覆做。就這樣完成了泡泡排序法, 邊排邊做, 會看到「大泡泡會先到最右邊」,接著越來越多排好。10個數字,只要重覆10-1次, 因為「頒獎時,前9人知道, 最後一個也就出現了」
+
+```cpp
+#include <stdio.h>
+int a[10]={90, 80, 70, 60, 50, 40, 30, 20, 10, 0};
+
+int main()
+{
+
+    for(int i=0; i<10; i++) printf("%d ", a[i] );///印出來
+    printf("\n");
+
+    for(int k=0; k<10-1; k++){
+
+        for(int i=0; i<10-1; i++){ ///巡一輪
+            if( a[i] > a[i+1] ){ ///希望左小右大,但不對....
+                int temp = a[i]; ///不對就交換
+                a[i] = a[i+1];
+                a[i+1] = temp;
+            }
+        }
+        for(int i=0; i<10; i++) printf("%d ", a[i] );///印出來
+        printf("\n");
+
+    }
+}
+```
+
+## step03-2_下週考試題目是「百數排序-泡泡排序法」,和前一個程式有98%相似。
+
+```cpp
+#include <stdio.h>
+int a[100];
+
+int main()
+{
+	for(int i=0; i<100; i++){
+		scanf("%d", &a[i] );
+	}
+	
+	for(int k=0; k<100-1; k++){
+		for(int i=0; i<100-1; i++){
+			if( a[i] > a[i+1] ){
+				int temp=a[i];
+				a[i]=a[i+1];
+				a[i+1]=temp;
+			}
+		}
+	}
+	for(int i=0; i<100; i++){
+		printf("%d\n", a[i] );
+	}
+}
+```
