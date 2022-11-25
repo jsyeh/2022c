@@ -1152,3 +1152,251 @@ int main()
 	}
 }
 ```
+# Week12
+
+## step01-0_考試泡泡排序法,考前複習、考後檢討,常見的問題就是分號及括號排版的問題,還有 +1 或 -1 很容易出錯的地方
+
+```cpp
+#include <stdio.h>
+
+int a[100];
+
+int main()
+{
+	for(int i=0; i<100; i++){
+		scanf("%d", &a[i] );
+	}
+	//重覆做很多次
+	for(int k=0; k<100-1; k++){
+		//從左到右巡, 大小不對,就交換
+		for(int i=0; i<100-1; i++)		{
+			if( a[i] > a[i+1] ){
+				int temp=a[i];
+				a[i] = a[i+1];
+				a[i+1] = temp;
+			}
+		}
+	}
+	
+	for(int i=0; i<100; i++){
+		printf("%d\n", a[i] );
+	}
+
+}
+```
+
+## step01-1_剛剛考完(全世界入門的)泡泡排序法, 但裡面的 a[i] a[i+1] 及迴圈的 N-1 很容易寫錯, 所以老師教我最喜歡的 Selection Sort 選擇排序法, 口訣 左手i 右手j, 不對就交換。迴圈長得像基礎型,只有右手j的開始位置是左手i 再 i+1 的那格。
+
+為了示範選擇排序的過程, 所以我寫了下面的程式用mouse+卡片的移動, 來示範
+```processing
+String [] card = {"5", "4", "3", "2", "1", "i", "j", "temp"};
+PVector [] coord;
+void setup(){
+  size(850,500);
+  coord = new PVector[card.length];
+  for(int i=0; i<card.length; i++){
+    coord[i] = new PVector(50+i*100, 150);
+  }
+}
+void draw(){
+  background(#FFFFF2);
+  for(int i=0; i< card.length; i++){
+    if(i>=card.length-2) fill(255,128,128);
+    else fill(255); 
+    rect(coord[i].x, coord[i].y, 80, 80);
+    textAlign(CENTER,CENTER);
+    textSize(50);
+    fill(0); text(card[i], coord[i].x+40, coord[i].y+40);
+  }
+}
+void mouseDragged(){
+  for(int i=0; i< card.length; i++){
+    if(coord[i].x<mouseX && mouseX<coord[i].x+80 && coord[i].y<mouseY && mouseY<coord[i].y+80){
+      coord[i].x += mouseX-pmouseX;
+      coord[i].y += mouseY-pmouseY;
+    }
+  }
+}
+```
+
+寫出來的程式碼
+```cpp
+///排序-選擇排序 Selection Sort
+///口訣: 左手i 右手j
+#include <stdio.h>
+int a[5] = {5,4,3,2,1};
+int main()
+{
+    for(int i=0; i<5; i++){ ///左手i
+        for(int j=i+1; j<5; j++){///右手j
+            if( a[i] > a[j]){ ///不對就交換
+                int temp=a[i];
+                a[i] = a[j];
+                a[j] = temp;
+            }
+        }
+    }
+    for(int i=0; i<5; i++) printf("%d ", a[i] );
+}
+```
+
+## step02-1_要理解二維陣列,就要照課本的方式來畫圖。從簡單的整數宣告、整數宣告並給初始值、陣列宣告、陣列宣告並給初始值、二維陣列宣告、二維陣列宣告並初始值, 小心右邊給值時, 是用大括號哦。CodeBlocks寫出程式再畫出對應的格子,幫助理解。
+
+```cpp
+#include <stdio.h>
+int main()
+{
+    int a; ///宣告整數a
+    int b=10; ///宣告整數b裡面放10
+    int c[3]; ///宣告整數陣列c 有3格
+    int d[3]={10,20,30};///宣告整數陣列d 有3格 放 10 20 30
+    int g[2][3]; ///宣告二維陣列
+    int h[2][3] = { {10, 20, 30}, {40, 50, 60} };
+    ///宣告二維陣列 左手i 右手j 
+}
+```
+
+## step02_2_接下來,把二維陣列拿來用, 配合2層迴圈,超完美。口訣還是「左手i、右手j」,在宣告時,看到的左邊、右邊, 在寫 for迴圈時,也是對應左邊、右邊。在printf()用的時候, 也是 a[i][j] 對應左邊、右邊。小心跳行的位置-在在印出 j j j 對應的數後要跳行。排版要好,括號要加, 觀念就清楚。
+
+```cpp
+///陣列的宣告、給值、拿來用
+#include <stdio.h>
+int main()
+{
+    int a[2][3]={ {10,20,30}, {40,50,60} };
+    ///左手i, 右手j
+    for(int i=0; i<2; i++){
+        for(int j=0; j<3; j++){
+            printf("%d ", a[i][j] );
+        }
+        printf("\n");
+    }
+}
+```
+
+## step03-1_為了解決實習課的矩陣乘法,我們要先了解它是什麼(它有點難),所以先從數字乘法、向量乘法(內積對應項相乘、加起來)、矩陣乘法, 從簡單開始慢慢來。同時矩陣乘法有點難,我們先在這裡實作「矩陣加法」也就是典型的 二層迴圈+陣列, 口訣還是左手i右手j。先把a[i][j]讀進來, 再把 b[i][j]讀進來, 之後 c[i][j] = a[i][j]+b[i][j], 最後印出 a[i][j]。
+
+```cpp
+///想做矩陣乘法,之前要先會...矩陣加法
+#include <stdio.h>
+int main()
+{
+	int a[10][10],b[10][10],c[10][10];
+	int n;
+	scanf("%d", &n);//3
+
+	for(int i=0; i<n; i++){ //左手i
+		for(int j=0; j<n; j++){//右手j
+			scanf("%d", & a[i][j] );
+		}//把 a[i][j] 讀進來
+	}
+	//(a b 不能合併)
+	for(int i=0; i<n; i++){ //左手i
+		for(int j=0; j<n; j++){//右手j
+			scanf("%d", & b[i][j] );
+		}//把 b[i][j] 讀進來
+	}
+
+	for(int i=0; i<n; i++){ //左手i
+		for(int j=0; j<n; j++){//右手j
+			c[i][j] = a[i][j] + b[i][j];
+		} //矩陣加法
+	}
+
+	for(int i=0; i<n; i++){ //左手i
+		for(int j=0; j<n; j++){//右手j
+			printf("%3d ", c[i][j] );
+		}
+		printf("\n");
+	}
+}
+```
+
+## step03-2_有了矩陣加法,便能改成矩陣乘法。全部的程式碼只有 c[i][j]=0; 接著在 k迴圈中, 把 c[i][j] += a[i][k] 乘 b[k][j]; 便完成了。
+
+```cpp
+///想做矩陣乘法,之前要先會...矩陣加法
+#include <stdio.h>
+int main()
+{
+	int a[10][10],b[10][10],c[10][10];
+	int n;
+	scanf("%d", &n);//3
+	
+	for(int i=0; i<n; i++){ //左手i
+		for(int j=0; j<n; j++){//右手j
+			scanf("%d", & a[i][j] );
+		}//把 a[i][j] 讀進來
+	}//(a b 不能合併)
+	for(int i=0; i<n; i++){ //左手i
+		for(int j=0; j<n; j++){//右手j
+			scanf("%d", & b[i][j] );
+		}//把 b[i][j] 讀進來 
+	}
+
+	for(int i=0; i<n; i++){ //左手i
+		for(int j=0; j<n; j++){//右手j
+			c[i][j] = 0; // a[i][j] + b[i][j];
+			for(int k=0; k<n; k++){
+				c[i][j] += a[i][k] * b[k][j];
+			}
+		} //矩陣加法 to 矩陣乘法
+	}
+	
+	for(int i=0; i<n; i++){ //左手i
+		for(int j=0; j<n; j++){//右手j
+			printf("%3d ", c[i][j] );
+		}
+		printf("\n");
+	}
+}
+```
+
+## step03-3_後來又多介紹怎麼把矩陣轉180度的方法,給大家參考
+
+```cpp
+#include <stdio.h>
+int a[20][20];
+
+int main()
+{
+	int M, N;
+	scanf("%d%d", &M, &N);
+
+	for(int i=0; i<M; i++){
+		for(int j=0; j<N; j++){
+			scanf("%d", & a[i][j] );
+		}
+	}
+
+	printf("\n");
+	for(int i=M-1; i>=0; i--){
+		for(int j=N-1; j>=0; j--){
+			printf("%2d ", a[i][j] );
+		}
+		printf("\n");
+	}
+}
+```
+
+
+- 0. 安裝 Git for Windows
+- 1. 開啟 Git Bash 下指令
+- 1.1. cd desktop
+- 1.2. git clone https://github.com/你的帳號/2022c
+- 1.3. cd 2022c
+- 1.4. start .    會開啟你的資料夾
+- 2. 把你的程式, 放到你的資料夾中, 等一下要雲端備份
+- 3. 要加進去你的帳冊
+- 3.1. git status  紅色
+- 3.2. git add .
+- 3.3. git status  綠色
+- 4. 要確定 commit 小心空格不要錯了,打字不要錯了,要看它的訊息有沒有錯
+- 4.0. git config --global user.email jsyeh@mail.mcu.edu.tw
+- 4.0. git config --global user.name jsyeh
+- 4.1. git commit -m week12
+- 5. 推送上雲端
+- 5.0. 在 Chrome 登入 GitHub
+- 5.1. git push
+- 如果有問題 git pull 之後, 會叫出萬惡編輯器 vim 你要用 Esc :wq 來離開
+
