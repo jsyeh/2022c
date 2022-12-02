@@ -1400,3 +1400,392 @@ int main()
 - 5.1. git push
 - 如果有問題 git pull 之後, 會叫出萬惡編輯器 vim 你要用 Esc :wq 來離開
 
+
+# Week13
+
+## step01-0_考試「矩陣加法」老師考前復習、考後講解出錯的地方。本週有事先練習的同學比較少,所以很多人沒有正確拿金牌,有點可惜
+
+```cpp
+#include <stdio.h>
+int a[10][10], b[10][10], c[10][10];
+
+int main()
+{
+	int n, m;
+	scanf("%d%d", &n, &m);
+	for(int i=0; i<n; i++){
+		for(int j=0; j<m; j++){
+			scanf("%d", &a[i][j] );
+		}
+	}
+	for(int i=0; i<n; i++){
+		for(int j=0; j<m; j++){
+			scanf("%d", &b[i][j] );
+		}
+	}
+	
+	for(int i=0; i<n; i++){
+		for(int j=0; j<m; j++){
+			c[i][j] = a[i][j] + b[i][j] ;
+		}
+	}
+
+	for(int i=0; i<n; i++){
+		for(int j=0; j<m; j++){
+			printf("%d ", c[i][j] );
+		}
+		printf("\n");
+	}
+
+}
+```
+
+```cpp
+#include <stdio.h>
+int a[10][10], b[10][10];
+
+int main()
+{
+	int n, m;
+	scanf("%d%d", &n, &m);
+	for(int i=0; i<n; i++){
+		for(int j=0; j<m; j++){
+			scanf("%d", &a[i][j] );
+		}
+	}
+	for(int i=0; i<n; i++){
+		for(int j=0; j<m; j++){
+			scanf("%d", &b[i][j] );
+		}
+	}
+	
+	for(int i=0; i<n; i++){
+		for(int j=0; j<m; j++){
+			printf("%d ", a[i][j] + b[i][j] );
+		}
+		printf("\n");
+	}
+
+}
+```
+
+## step01-1_實習課的題目「買賣股票的最佳時機」要找的時候,不能找陣列的最大值、最小值, 因為可能買到最貴、賣到最便宜,反而虧最多錢。老師示範「左手i右手j」來暴力搜尋,找到右手最大、左手最小的時機點, 找到後, 記起來, 便是答案。其中 int ans = -99999999; 是一種技巧,幫你找出真的最大值, 而且程式碼會比較簡單。
+
+利用以下程式,配合滑鼠的操作、移動卡片, 來了解「左手i右手j」怎麼把全部的買賣組合都試過一次
+```processing
+String [] card = {"18","20","17","15","12","10","11","16","12","8","11","14","17","13","14", "a[i]", "a[j]"};
+PVector [] coord;
+void setup(){
+  size(1250,600);
+  coord = new PVector[card.length];
+  for(int i=0; i<card.length; i++){
+    coord[i] = new PVector(50+i*70, 150);
+  }
+}
+void draw(){
+  background(#FFFFF2);
+  for(int i=0; i< card.length; i++){
+    if(i>=card.length-2) fill(255,128,128);
+    else fill(255); 
+    rect(coord[i].x, coord[i].y, 65, 110);
+    textAlign(CENTER,CENTER);
+    textSize(40);
+    fill(0); text(card[i], coord[i].x+40, coord[i].y+40);
+  }
+}
+void mouseDragged(){
+  for(int i=0; i< card.length; i++){
+    if(coord[i].x<mouseX && mouseX<coord[i].x+80 && coord[i].y<mouseY && mouseY<coord[i].y+80){
+      coord[i].x += mouseX-pmouseX;
+      coord[i].y += mouseY-pmouseY;
+    }
+  }
+}
+```
+
+```cpp
+#include <stdio.h>
+int a[100];
+
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	for(int i=0; i<n; i++){
+		scanf("%d", &a[i] );
+	}
+
+	int left, right;
+	int ans = -99999999;  //想賺最多錢, 
+	for(int i=0; i<n; i++){
+		for(int j=i+1; j<n; j++){
+			if( a[j] - a[i] > ans ){
+			//如果賺更多錢,...
+				ans = a[j] - a[i];
+				left = a[i];
+				right = a[j];
+			}
+		}
+	} //不能用排序
+
+	printf("請按任意鍵繼續 . . . \n");
+	printf("最大利潤=%d-%d=%d\n", right, left, ans );
+}
+```
+## step02-1_今天上課的人比較少,我們就來看一下一題實習課的題目,與Fibonacci數列有關係。Fibonacci數列,與黃金比例有關係,也與A4白紙的比例有點關係。不過重點就是 a[i] = a[i-1] + a[i-2]; 接著for迴圈的範圍就要想一下, 要從2開始, 不然a[i-2]會有負數在裡面而出錯。在 a[0] a[1] 也要先手動填好。最後全部印出來(不要印太多, 不然會overflo
+
+```cpp
+///1 1 2 3 5 8 13 (21) (33)
+///口訣: 前2項相加,得到新的項
+
+#include <stdio.h>
+int a[50];
+
+int main()
+{
+    a[0] = 0;
+    a[1] = 1;
+    ///數學歸納法, a[0] a[1] 要先有,才能自動繼續
+    for(int i=2; i<45; i++){ ///因為太大會爆炸!!
+        a[i] = a[i-1] + a[i-2];
+    }
+
+    for(int i=0; i<45; i++){
+        printf("%d ", a[i] );
+    }
+}
+```
+
+## step02-2_有了Fibonacci數列的簡單程式, 便能變形成實習課(有修改增加一點難度、趣味性)的Fibonacci數列3i的題目
+
+```cpp
+///1 1 2 3 5 8 13 (21) (33)
+///口訣: 前2項相加,得到新的項
+
+#include <stdio.h>
+int a[50];
+
+int main()
+{
+	int n;
+	scanf("%d", &n);
+    a[0] = 0;
+    a[1] = 1;
+    ///數學歸納法, a[0] a[1] 要先有,才能自動繼續
+    for(int i=2; i<n; i++){ ///因為太大會爆炸!!
+        a[i] = a[i-1] + a[i-2];
+    }
+
+    for(int i=0; i<n; i++){
+    	if( i%3==0 ) printf("%d ", a[i] );
+    }
+}
+```
+
+## step02-3_實習課上週還有一題,要把矩陣轉180度,老師就再用「左手i右手j」的口訣示範一次,先能讀入矩陣,再印出來。接下來觀察印出來的值,了解「左手i右手j」要改成什麼東西,範圍了解,答案就出來了
+
+```cpp
+#include <stdio.h>
+int a[200][200];
+int main()
+{
+	int n, m;
+	scanf("%d%d", &n, &m);
+	for(int i=0; i<n; i++){
+		for(int j=0; j<m; j++){
+			scanf("%d", &a[i][j] );
+		}
+	}
+
+	printf("\n");
+	for(int i=n-1; i>=0; i--){
+		for(int j=m-1; j>=0; j--){
+			printf("%2d ", a[i][j] );
+		}
+		printf("\n");
+	}
+}
+```
+
+## step03-1_今天的新主題是function函式(有人叫函數,但怕大家對國中的f(x)很害怕,所以我就叫它函式),像個魔法的盒子,可以幫忙做事情。課本有函式的定義, int addnum(int a, int b){return a+b;} 在第一行,要return出來的形狀, 也要有送進去的形狀,不能省略。用的時候就簡單給數字進去就好了
+```cpp
+#include <stdio.h>
+///函式的定義
+int addnum( int a, int b )
+{
+    return a + b;
+}///回覆、回傳給你
+
+int main()
+{
+    int ans = addnum( 2, 3 );///函式的呼叫/使用
+    printf("addnum(2,3) 會得到 %d\n", ans );
+}
+```
+
+## step03-2_利用Git指令上傳程式到GitHub
+
+- 0. 安裝 Git for Windows (按20次Next)
+- 1. 啟動 Git Bash
+- 1.1. cd desktop (意思是,到你的電腦桌面)
+- 1.2. git clone https://github.com/你的帳號/2022c (意思是,下載你的雲端倉庫)
+- 1.3. cd 2022c  (意思是,到你的程式的倉庫裡)
+- 1.4. start .  (意思是,開啟你這個目錄的檔案總管)
+- 2. 在檔案總管理, 整理你的程式, week02 ... week12 外, 多 week13 裡面要放今天程式
+- 3. 準備 status add status 
+- 3.1. git status  (意思是,看到你的紅色的狀態)
+- 3.2. git add .  (意思是, 把你現在的目錄 . 加到倉庫裡)
+- 3.3. git status  (意思是,看到綠色的狀態)
+- 4. 準備 commit 確認你對倉庫的修改
+- 4.0. git config --global user.email jsyeh@mail.mcu.edu.tw  (意思是,設定email)
+- 4.0. git config --global user.name jsyeh  (意思是,設定你的github的名字)
+- 4.1. git commit -m week13  (意思是, commit確認, 並留下 commit message 是 week13)
+- 5. 推送上雲端
+- 5.1. git push
+- 5.2. 會跳出 小視窗, 請你用 Chrome browser登入GitHub、確定身份)
+
+
+## step03-3_下課後,有同學問實習課題目-均標分數,裡面有大於100及負數,如何處理。老師寫了3個版本程式來示範
+
+使用以下的程式, 配合滑鼠的操作、移動卡片, 來輔助理解 資料怎麼讀進來的
+
+```processing
+String [] card = {"18","20","117","15","12","10","11","16","-12","8","11","14","17","13","14", "a[i]", "N"};
+PVector [] coord;
+void setup(){
+  size(1250,600);
+  coord = new PVector[card.length];
+  for(int i=0; i<card.length; i++){
+    coord[i] = new PVector(50+i*70, 150);
+  }
+}
+void draw(){
+  background(#FFFFF2);
+  for(int i=0; i< card.length; i++){
+    if(i>=card.length-2) fill(255,128,128);
+    else fill(255); 
+    rect(coord[i].x, coord[i].y, 65, 110);
+    textAlign(CENTER,CENTER);
+    textSize(40);
+    fill(0); text(card[i], coord[i].x+40, coord[i].y+40);
+  }
+}
+void mouseDragged(){
+  for(int i=0; i< card.length; i++){
+    if(coord[i].x<mouseX && mouseX<coord[i].x+80 && coord[i].y<mouseY && mouseY<coord[i].y+80){
+      coord[i].x += mouseX-pmouseX;
+      coord[i].y += mouseY-pmouseY;
+    }
+  }
+}
+```
+
+均標人數 : 請輸入任意個分數(最多20個)，最後一個資料以負數結束輸入，注意 >100 和 <0 的分數不計算，然後計算並且輸出平均分數，再計算>=平均分數的人數輸出。 
+
+- Input: 65 109 78 77 68 57 -5
+- Output: ﻿69.00 2
+
+第一版
+```cpp
+#include <stdio.h>
+int a[30];
+
+int main()
+{
+	int N;
+	for(int i=0;  ; i++){
+		scanf("%d", &a[i]);
+		if(a[i]<0){
+			N = i;
+			break;
+		}
+	}
+	
+	int good=0;
+	float sum=0;
+	for(int i=0; i<N; i++){
+		if(a[i]<=100){
+			sum+=a[i];
+			good++;
+		}
+	}
+	float average = sum / good;
+	
+	int up=0;
+	for(int i=0; i<N; i++){
+		if( a[i]>average && a[i]<=100) up++;
+	}
+	
+	printf("%.2f %d", average, up);
+	
+}
+```
+
+第二版
+```cpp
+#include <stdio.h>
+int a[30];
+
+int main()
+{
+	int N;
+
+	int i=0;
+	while(1){
+		scanf("%d", &a[i]);
+		if(a[i]<0){
+			N = i;
+			break;
+		}
+		if(a[i]>100) continue;
+		i++;
+	}
+	
+	float sum=0;
+	for(int i=0; i<N; i++){
+		sum+=a[i];
+	}
+	float average = sum / N;
+	
+	int up=0;
+	for(int i=0; i<N; i++){
+		if( a[i]>average) up++;
+	}
+	
+	printf("%.2f %d", average, up);
+	
+}
+```
+
+第三版
+
+```cpp
+#include <stdio.h>
+int a[30];
+
+int main()
+{
+	int N;
+	for(int i=0;  ; i++){
+		scanf("%d", &a[i]);
+		if(a[i]<0){
+			N = i;
+			break;
+		}
+		if(a[i]>100) i--;
+	}
+	
+	float sum=0;
+	for(int i=0; i<N; i++){
+		sum+=a[i];
+	}
+	float average = sum / N;
+	
+	int up=0;
+	for(int i=0; i<N; i++){
+		if( a[i]>average) up++;
+	}
+	
+	printf("%.2f %d", average, up);	
+}
+```
