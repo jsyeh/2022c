@@ -1789,3 +1789,199 @@ int main()
 	printf("%.2f %d", average, up);	
 }
 ```
+
+
+
+# Week14
+
+## step01-0_考試Fibonacci數列,考前複習、考後講解同學出錯的地方,主要是忘了分號、陣列宣告、陣列使用不熟, 還有for迴圈的開始結束,容易超過陣列範圍
+
+```cpp
+#include <stdio.h>
+
+int a[50];
+
+int main()
+{
+	a[0]=1;
+	a[1]=1;	
+	//陣列的範圍要很小心, 這是錯的
+	for(int i=1; i<=50; i++){
+		a[i] = a[i-1] + a[i-2];
+	}
+	
+	int n;
+	scanf("%d", &n);
+	for(int i=0; i<n; i++){
+		printf("%d ", a[i] );
+	}
+
+}
+```
+
+或是可以合在一起
+
+```cpp
+#include <stdio.h>
+
+int a[50];
+
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	
+	a[0]=0;
+	a[1]=1;
+	printf("1 ");
+	
+	for(int i=2; i<=n; i++){
+		a[i] = a[i-1] + a[i-2];
+		printf("%d ", a[i] );
+	}
+	
+
+}
+```
+
+## step01-1_為了解變數的範圍,我們先用最簡單的, 在外面有個全域變數 int a=10; 在兩個函式中,如果修改到, 就會改到同一個變數。
+```cpp
+///函數的變數範圍
+#include <stdio.h>
+
+int a=10; ///Global全世界 全域變數
+
+void func()
+{
+    a = 30;
+    printf("func()中 a改成:%d\n", a);
+}
+int main()
+{
+    ///裡面沒有,會用外面的 a
+    printf("main()中 a是:%d\n", a);
+    func();
+    printf("main()中 a是:%d\n", a);
+}
+```
+
+## step01-2_在外面宣告的 int a=10; 是global變數,全世界看得到。void func() 裡宣告的 int a=20; 是 local 變數。local變數的修改,不會動到global變數。課本用小房子來介紹這個觀念, 老師則是用 C Tutor 解釋呼叫 func() 時會開複本的想法。
+
+```cpp
+///函數的變數範圍
+#include <stdio.h>
+
+int a=10; ///Global全世界 全域變數
+
+void func()
+{
+    int a = 20; ///local 區域變數
+    printf("func()裡的a是:%d\n", a);
+    a = 30;
+    printf("func()中 a改成:%d\n", a);
+}
+int main()
+{
+    ///裡面沒有,會用外面的 a
+    printf("main()中 a是:%d\n", a);
+    func();
+    printf("main()中 a是:%d\n", a);
+}
+```
+
+## step02-1_函式的參數傳遞時, 請用上週教過的「教室有門,上面用透明膠膜封起來,有標籤int n」進來的數值20, 就會 int a=20 的意思。變數的名字,在不同的函式裡可能會弄混,要小心一下。
+
+```cpp
+///參數 傳來傳去
+#include <stdio.h>
+int n=30;
+int funcA(int a, int b)
+{
+    printf("funcA()的a,b是:%d %d\n", a, b);
+    return a + b;
+}
+int funcB(int n)
+{
+    printf("funcB() 的 n 是:%d\n", n);
+    int ans = funcA(n, n);
+    return ans;
+}
+int main()
+{
+    int a=10, b=20;
+    funcB(b);
+    funcA(a,b);
+    printf("main()的a,b是:%d %d\n", a, b);
+}
+```
+
+## step02-2_複習最大公因數,輾轉相除法, 利用 while迴圈來做, 重點是老大a, 老二b, 算出老三c=a%b。如果c==0, 那老二就是答案。
+
+```cpp
+///輾轉相除法
+
+#include <stdio.h>
+int main()
+{
+    int a, b, c;///老大、老二、老三
+    scanf("%d%d", &a, &b);
+
+    while(1){
+        c = a%b; ///得到老三
+        if(c==0) break;
+        a = b;
+        b = c;
+    }
+    printf("%d", b);
+}
+```
+
+## step02-3_今天的大魔王, 是利用函式呼叫函式的方式, 來計算「輾轉相除法」找最大公因數。程式卻很簡單, 使用我們自己定義的 int gcd(int a, int b) 裡面如果a是0,b是答案。如果b是0,a是答案。如果都不是, 那就再請 gcd出馬, 計算 gcd(b, a%b) 的結果 return 回去。
+
+```cpp
+///輾轉相除法
+///最大公因數 greatest common divisor/divider
+#include <stdio.h>
+int gcd( int a, int b )
+{
+    printf("%d %d\n", a, b);
+    if( a==0 ) return b;
+    if( b==0 ) return a;
+
+    return gcd( b, a%b );
+}
+
+int main()
+{
+    int a, b;
+    scanf("%d%d", &a, &b);
+
+    int ans = gcd( a, b );
+    printf("%d", ans);
+}
+```
+
+## step02-4_為了理解,把函式呼叫函式的最大公因數的算法,代入很大的數字。可以看到數字a,b會越來越小, 一下子就算出答案了
+
+## step03-1_老師介紹lightbot的小遊戲,可以在iOS/Android/Mac上面跑(flash版本被禁用,可惜)。請安裝 APP, 試著全破第1關後, 進入第2關 Procedure 函式的部分, 了解 MAIN 之外, 可以利用 P1 或 P1 + P2 來完成更複雜的任務。
+
+## step03-2_將今天的程式, 利用 Git 指令上傳 GitHub
+
+- 0. 安裝 Git 程式
+- 1. 啟動 Git Bash 進入桌面、雲端下載、進入目錄、開檔案總管
+- 1.1. cd desktop
+- 1.2. git clone https://github.com/jsyeh/2022c
+- 1.3. cd 2022c
+- 1.4. start . 
+- 2. 將今天的程式, 在檔案總管中, 放好, 準備備份到 GitHub
+- 3. 在 Git Bash 裡, 繼續 看到紅色、add、看到綠色 ,將你的修改add加到帳冊中
+- 3.1. git status
+- 3.2. git add .
+- 3.3. git status
+- 4. 準備 commit 確認你的修改 (之前要設定你的資訊)
+- 4.0. git config --global user.email jsyeh@mail.mcu.edu.tw
+- 4.0. git config --global user.name jsyeh
+- 4.1. git commit -m week14
+- 5. 推送上雲端
+- 5.1. git push
+- 5.2. 要記得用 Chrome 登入 GitHub 
