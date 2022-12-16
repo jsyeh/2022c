@@ -1985,3 +1985,174 @@ int main()
 - 5. 推送上雲端
 - 5.1. git push
 - 5.2. 要記得用 Chrome 登入 GitHub 
+
+
+
+# Week15
+
+## step01-0_考試「最大公因數gcd的函式呼叫函式」法,老師先用台北大學資工系老師今晨的訊息,解釋我們教學的狀況。接下來進行考前複習2
+
+## step01-1_今天的主軸是字串, 我們先從字串的宣告、宣告並定義初始值、字串在 printf()裡使用%s拿來用。
+ 
+## step02-0_介紹課本的 %d %f %c %d 的意思,並在網路上查看完整版的20多種。我們熟悉課本的4種就好,其他可上網查
+
+```cpp
+///什麼是字串
+///之前教過 int 整數 "%d"
+///之前教過 float 浮點數(有小數點) "%f"
+///現在要教2個 char "%c" 和很多個 char "%s"
+#include <stdio.h>
+int main()
+{
+    printf("Hello World\n"); ///第1週教過字串了
+
+    char line[] = "Hello World"; ///字串的宣告、給值
+    ///沒有寫多大,就電腦幫忙數,把格子準備好
+
+    printf("整數 %d\n", 100);
+    printf("浮點數 %f\n", 3.141592653589793238462643383279);
+    printf("%s 字串\n", line ); ///字串拿來用!
+}
+```
+
+## step02-1_介紹完課本的 %d %f %c %s 後, 前一個課堂作業有用到 %s, 這個課堂作業則是使用 %c 及 %d 印出 65 66 67 及 97 98 99 等值, 對照 'A' 'B' 'C' 與 'a' 'b' 'c' 等, 讓大家了解 ASCII 美國國家標準資訊交換碼
+
+```cpp
+///字母 vs.它的值
+///ASCII 美國國家標準資訊交換碼 (數字<->字母符號)
+///2 4 8 16 32 64 128 256 (2的很多次方)
+///Q: 26個英文字母,請問哪一個數字比較適合拿來用?
+///A: 32最適合裝
+///ASCII的設計理念:   32 + 32 + 32 + 32
+///看不到 符號 大寫 小寫
+///   32 + 32 = 64 A:65
+///   32 + 32 + 32 = 96  a:97
+#include <stdio.h>
+int main()
+{
+    printf("%c : %d\n", 65, 65);
+    printf("%c : %d\n", 66, 66);
+    printf("%c : %d\n", 67, 67);
+    printf("%c : %d\n", 'A', 'A' );
+    printf("%c : %d\n", 'B', 'B' );
+    printf("%c : %d\n", 'C', 'C' );
+    printf("上面用數字 64 及單引號 'a' 的結果都一樣\n");
+    printf("%c : %d\n", 97, 97);
+    printf("%c : %d\n", 'a', 'a');
+}
+```
+
+## step02-2_為了更了解 單引號(字母/字元) 及雙引號(字串、又叫字元陣列,是字元的複數), 我們印出一些特殊符號,像跳行(反斜線n)、TAB(反斜線t)、字串結尾(反斜線0), 用單引號括起來後, 便可以印出它的值。最後, 因為字串的長度不知道是多少, 所以迴圈很難寫, 我們寫出 for(int i=0;   ; i++) 裡面用 if(line[i]==0) break; 來完成字串的迴圈。
+
+```cpp
+///想了解這些 字母/字元(單引號) vs. 字串(雙引號,複數)
+#include <stdio.h>
+int main()
+{
+    printf("=%c=%d=\n", 65, 65);
+    printf("=%c=%d=\n", '+', '+');
+    printf("=%c=%d=\n", '\n', '\n');
+    printf("=%c=%d=\n", '\t', '\t');
+    printf("=%c=%d=\n", '\0', '\0'); ///其實就是 0
+
+    char line[] = "Hello World AAA"; ///字串, 又叫 字元陣列
+    ///用奇怪的迴圈,把字串裡,每一個字母印出來
+
+    int N=0;///一開始還沒印字母
+    for(int i=0;       ; i++){ ///不知道迴圈要跑多久
+        char c = line[i];
+        if( c == 0 ) break; ///如果遇到字串結尾的 0 就結束
+        printf("=%c", c );
+        N++; ///多印出一個字母
+    }
+    printf("\n你印了%d字母\n", N);
+}
+```
+
+
+## step03-1_下週考試題目「字串反印」會用到今天教的幾個觀念,像是字串宣告 char line[3000];、字串利用 scanf()配合 %s 讀入 (不用加&)、字串的奇怪迴圈, 來數數有幾個字母在裡面, 也就是字串的長度。再配合之前考試教過的「百數反印」, 便能將字串反印。
+
+```cpp
+///字串反印 (反過來印) (想想看,百數反印,還記得嗎?)
+/// ABCDE 印出 EDCBA         for(int i=99; i>=0; i--) 反過來的迴圈
+/// 1234567 印出 7654321
+#include <stdio.h>
+char line[3000]; ///外面宣告陣列,可以比較
+int main()
+{
+    printf("請輸入一堆字母,不要有空格哦: ");///這行考試不用寫
+
+    scanf("%s", line);
+    ///printf("%s", line);
+
+    int N=0;
+    for(int i=0; line[i]!=0; i++){ ///字串的迴圈
+        N++;
+    }///你在數,有幾個字母在你的字串裡面!
+
+    for(int i=N-1; i>=0; i--){
+        printf("%c", line[i] );
+    }
+}
+```
+
+另一種使用 `strlen()` 的方法
+```cpp
+#include <stdio.h>
+#include <string.h> ///字串外掛
+char line[3000];
+int main()
+{
+
+
+    scanf("%s", line);
+
+    int N = strlen(line);
+    ///    字串長度
+
+
+
+
+    for(int i=N-1; i>=0; i--){
+        printf("%c", line[i] );
+    }
+}
+```
+## step03-2_介紹細節&另一種寫法
+
+
+Intel64(只有64) vs. AMD64(相容32/64) Win!!
+所以現在的電腦是用 x64(相容32/64)
+所以現在的 int 是 32bit
+long long int 便可以取到 64bit 的很長很長的整數
+
+傳址(Call by Address)
+傳值(Call by Value)
+
+## step03-3_推送上雲端
+
+作法:
+
+0. 安裝 Git 軟體
+
+1. 啟動 Git Bash (先到桌面、雲端下載、進入 2022c資料夾、開檔案總管)
+1.1. cd desktop
+1.2. git clone https://github.com/jsyeh/2022c
+1.3. cd 2022c
+1.4. start .
+
+2. 在檔案總管 整理你的week15的程式
+
+3. 把程式碼加入倉庫 (紅、add、綠)
+3.1. git status
+3.2. git add .
+3.3. git status
+
+4. 加入 commit 資訊
+4.0. git config --global user.email jsyeh@mail.mcu.edu.tw
+4.0. git config --global user.name jsyeh
+4.1. git commit -m week15
+
+5. 推送上雲端
+5.1. git push
+5.2. 記得在 Chrome 登入 GitHub 哦
