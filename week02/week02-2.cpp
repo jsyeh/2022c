@@ -1,4 +1,4 @@
-//Week02-2.cpp step01-2 if() to compare big and small
+///Week02-2.cpp step01-2 if() to compare big and small
 //10 12
 //10 14
 //100 200

@@ -164,3 +164,196 @@ int main()
 
 
 
+# Week02
+
+1. step01-1_請試著寫勇敢的戰士這題,在瘋狂程設-CPE顆星廣場-一顆星-UVA10055 Hashmat the brave warrior 的題目。英文題目看不懂, 就先不要看。看數字後,可能就先有靈感,寫寫看, 簡單測資中, 右邊大、左邊小, 所以 int ans = b - a; 即可。配合 while迴圈, 印出來好像是對的 (還沒寫完)。請在瘋狂程設裡, 用簡單測資執行, 截圖week02-1.png上傳,  程式在 CodeBlocks存成 week02-1.cpp
+
+2. step01-2_因為題目可能會遇到負的, 所以就加上一個if(判斷)來解決ans為負的問題。請先在測資(測試資料Test Data)裡, 加一筆左邊大右邊小的數字, 請在瘋狂程設裡執行這樣的測資, 截圖week02-2.png上傳,  程式在 CodeBlocks存成 week02-2.cpp
+
+3. step02-1_這個題目要正確, 必須解決「很長很長的整數」的問題。請在瘋狂程設裡, 截圖week02-3.png上傳,  程式在 CodeBlocks存成 week02-3.cpp
+
+4. step02-2_這學期要把C語言教完, 再多教一點點C++,所以今天就把C++的輸入、輸出介紹一下。首先 #include 的不是 stdio.h 而是 iostream (沒有.h哦), 接下來是不用管型別, 直接用大於大於>>來轉送到變數裡, 要輸出時, 使用 << 來轉出去。請在瘋狂程設裡, 截圖week02-4.png上傳,  程式在 CodeBlocks存成 week02-4.cpp
+
+5. step02-3_一直有重覆的 std:: 取用命名空間, 有點麻煩, 所以可以在最前面寫一行 using namespace std; 來使用 std:: 這個命名空間, 則 後面就可簡寫 cin 和 cout 和 endl。請在瘋狂程設裡, 截圖week02-5.png上傳,  程式在 CodeBlocks存成 week02-5.cpp
+
+6. step03-1_請將今天的程式, 利用 Git 備份到 GitHub 上, 再上傳截圖證明
+
+## step00-0_有人問大小寫轉換
+
+```cpp
+#include <stdio.h>
+#include <ctype.h>
+int main()
+{
+	char c;
+	while( scanf("%c", &c)==1 ){
+		if( islower(c) ) c = toupper(c);
+		else if( isupper(c) ) c = tolower(c);
+		printf("%c", c);
+	}
+}
+```
+
+## step01-0
+
+```cpp
+#include <stdio.h>
+int main()
+{
+	char line[40];
+
+	int total = 0;//Step05 total
+	
+	//Step04 while loop with scanf() == ??
+	while( scanf("%s", line)==1 ){  //Step01 one Input OK
+	
+		int ans = 0;
+		for(int i=0; line[i]!=0 ; i++){ //Step02 string loop
+			if( line[i]=='2' ) ans++; //Step03 ans
+		}
+		printf("%d\n", ans); //Step03 ans
+		total += ans; //Step05 total
+	}	
+	printf("Total: %d\n", total); //Step05 total
+}
+```
+
+## step01-1
+```cpp
+///Week02-1.cpp step01-1 while + scanf() ==2
+#include <stdio.h>
+
+int main()
+{
+	int a, b;
+
+	while(	scanf("%d%d", &a, &b)==2){
+		int ans = b - a;
+		if(a>b) ans = a-b;
+		if(b>a) ans = b-a;
+		printf("%d\n", ans);
+	}
+}
+```
+
+## step01-2
+```cpp
+///Week02-2.cpp step01-2 if() to compare big and small
+//10 12
+//10 14
+//100 200
+//300 400
+//500 300
+#include <stdio.h>
+
+int main()
+{
+	int a, b;
+
+	while(	scanf("%d%d", &a, &b)==2){
+		int ans = b - a;
+		if(ans<0) ans = a - b;
+		//if(a>b) ans = a-b;
+		//if(b>a) ans = b-a;
+		printf("%d\n", ans);
+	}
+}
+```
+
+## step02-1
+```cpp
+//Week02-1.cpp step01-1 while + scanf() ==2
+#include <stdio.h>
+
+int main()
+{
+	int a, b;
+
+	while(	scanf("%d%d", &a, &b)==2){
+		int ans = b - a;
+		if(a>b) ans = a-b;
+		if(b>a) ans = b-a;
+		printf("%d\n", ans);
+	}
+}
+/*
+#include <stdio.h>
+int main()
+{
+    ///32位元 進入 64位元, 發生 Intel AMD之爭
+    ///x64 x86 程式可互相相容 (int用 32位元)
+    ///42,9496,7296 42億
+/// 很長很長的整數 改用 long long int
+    long long int a, b;
+    scanf("%lld%lld", &a, &b);
+    ///是 L L D 的小寫, 不是數字 1 1 D
+    printf("%lld %lld\n", a, b);
+}
+*/
+
+```
+
+## step02-2
+
+```cpp
+//Week02-4.cpp step02-2 C++ 
+#include <iostream> //#include <stdio.h>
+
+int main()
+{
+	long long int a, b;
+	
+	while( std::cin >> a >> b ){
+	//while( scanf("%lld%lld", &a, &b) == 2 ){
+		long long int ans = a - b;
+		if(ans<0) ans = b - a;
+		//printf("%lld\n", ans);
+		std::cout << ans << std::endl;
+	}
+}
+```
+
+## step02-3
+```cpp
+///Week02-5.cpp step02-3 使用 namespace
+#include <iostream>
+using namespace std;
+int main()
+{
+	long long int a, b;
+
+	while( cin >> a >> b ){
+		long long int ans = a - b;
+		if(ans<0) ans = b - a;
+		cout << ans << endl;
+	}
+}
+```
+
+## step03-1
+0. 安裝 Git, 開啟 Git Bash
+0.1. 桌面的葉正聖老師資料夾裡
+0.2. 要按2x下一步
+0.3. 要開 Git Bash
+
+1. Git Bash 進入桌面, 再 git 的 clone下來, 再進入 2022c
+1.1. cd desktop
+1.2. git clone https://github.com/帳號/2022c
+1.3. cd 2022c
+
+2. start . 可開啟檔案總管, 新增 week02, 請把今天的 5個程式放進來
+
+3. 加入帳冊 用 git 的 add 來加, 不要忘了小數點。 配合 git 的 status 看色彩
+3.1. git status
+3.2. git add .
+3.3. git status
+
+4. 確認、認可你的修改, 用 git 的 commit 配合你的 commit message訊息 (小心, 4.0 要做哦)
+4.0. git config --global user.email jsyeh@mail.mcu.edu.tw
+4.0. git config --global user.name jsyeh
+4.0. 如果沒有設定, 會失敗, 問你 who you are 
+4.1. git commit -m "第02週的程式"
+
+5. 推送上雲端
+5.1. git push
+5.2. 會請你要用 Chrome登入 GitHub
