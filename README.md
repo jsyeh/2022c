@@ -357,3 +357,326 @@ int main()
 5. 推送上雲端
 5.1. git push
 5.2. 會請你要用 Chrome登入 GitHub
+
+
+# Week03
+
+## step01-0_考試勇敢的戰士, 考前老師示範複習, 老師再講解同學出錯的地方。之前再講解今天想介紹有趣的象棋程式。
+
+```cpp
+#include <stdio.h>
+int main()
+{
+	long long int a, b;
+
+	while( scanf("%lld%lld", &a, &b) == 2){
+
+		long long int ans = b - a;
+		if( ans < 0 ) ans = a - b;
+		printf("%lld\n", ans);
+
+	}
+}
+```
+
+```processing
+// 2023-02-28 19:27 因等看診,臨時寫個象棋的程式
+// 目前還沒有 Undo 及記棋譜的功能（都需要讀檔）
+
+String nameB[] = {"", "將","士","象","車","馬","包","卒"};
+String nameR[] = {"", "帥","仕","相","俥","傌","炮","兵"};
+
+int board[][] = {
+  {4, 0, 0, 7, 0, 0, -7,  0, 0, -4},
+  {5, 0, 6, 0, 0, 0,  0, -6, 0, -5},
+  {3, 0, 0, 7, 0, 0, -7,  0, 0, -3},
+  {2, 0, 0, 0, 0, 0,  0,  0, 0, -2},
+  {1, 0, 0, 7, 0, 0, -7,  0, 0, -1},
+  {2, 0, 0, 0, 0, 0,  0,  0, 0, -2},
+  {3, 0, 0, 7, 0, 0, -7,  0, 0, -3},
+  {5, 0, 6, 0, 0, 0,  0, -6, 0, -5},
+  {4, 0, 0, 7, 0, 0, -7,  0, 0, -4},
+};
+
+void setup(){
+  fullScreen();
+  print(width,height);
+  for(String name : PFont.list()){
+    println(name);
+  }
+  PFont font = createFont("標楷體", 50);
+  textFont(font);
+}
+
+color cWood=#FADC79;
+void draw(){
+  background(cWood);
+  stroke(0);
+  strokeWeight(2);
+  fill(cWood);
+  for(int i=0; i<8; i++){
+    for(int j=0; j<9; j++){
+      /// 1440/9 = 96, 900/9 = 100
+      rect( X(j), Y(i), 144, 100 );
+    }
+  }
+  rect( X(4), Y(0), 144, 100*8 );
+  line( X(0), Y(3), X(2), Y(5) );
+  line( X(2), Y(3), X(0), Y(5) );
+  line( X(7), Y(3), X(9), Y(5) );
+  line( X(9), Y(3), X(7), Y(5) );
+  for(int i=0; i<9; i++){
+    for(int j=0; j<10; j++){
+      if(selectedI!=i || selectedJ!=j){
+        drawChess(board[i][j], i, j);
+      }
+    }
+  }
+  if(selectedI!=-1 && selectedJ!=-1){
+    drawChessRaw(board[selectedI][selectedJ], mouseX, mouseY);
+  }
+}
+
+int selectedI=-1, selectedJ=-1;
+
+void mousePressed(){
+  for(int i=0; i<9; i++){
+    for(int j=0; j<10; j++){
+      if(dist(mouseX, mouseY, X(j), Y(i))<40){
+        selectedI = i;
+        selectedJ = j;
+      }
+    }
+  }
+}
+
+void mouseReleased(){
+  for(int i=0; i<9; i++){
+    for(int j=0; j<10; j++){
+      if(dist(mouseX, mouseY, X(j), Y(i))<40){
+        int id = board[selectedI][selectedJ];
+        board[selectedI][selectedJ] = 0;
+        board[i][j] = id;
+        break;
+      }
+    }
+  }
+  selectedI = -1;
+  selectedJ = -1;
+}
+
+void drawChessRaw(int id, int x, int y){
+  if(id==0) return;
+  fill(255);
+  stroke(0);
+  ellipse(x, y, 80, 80);
+  textAlign(CENTER, CENTER);
+  if(id<0){
+    stroke(#FF0000);
+    ellipse(x, y, 65, 65);
+    fill(#FF0000);
+    text(nameR[-id], x, y-6 );
+  }else{
+    stroke(0);
+    ellipse(x, y, 65, 65);
+    fill(0);
+    text(nameB[id], x, y-6 );
+  }
+
+}
+
+void drawChess(int id, int i, int j){
+  drawChessRaw(id, X(j), Y(i));
+}
+
+int X(int j){
+  return 72+144*j;
+}
+
+int Y(int i){
+  return 50+100*i;
+}
+```
+
+## step01-1_今天的主題又是字串的處理, 整合型的題目, 我們先試 CPE顆星廣場的UVA401的題目的前面幾步。先用scanf()來讀字串, 再用 while迴圈配合scanf()來讀入資料,並印出錯誤的答案
+
+```cpp
+//Week03-1 Palindrome (CPE顆星廣場-一顆星(難))
+//step1: Input Ouput  scanf("%s", line)
+//step2: while() + scanf() == 1
+#include <stdio.h>
+int main()
+{
+	char line[30];
+
+	while( scanf("%s", line) == 1 ){
+
+		printf("%s", line);
+
+		printf(" -- is not a palindrome.\n\n");
+	}
+}
+```
+
+## step01-2_迴文Palindrome就是正讀、反讀都一樣。要判斷迴圈, 可以利用for迴圈,逐一比較字串裡面的字母, 正著讀用 line[i], 反著讀用 line[N-1-i], 如果出問題, 就記下來。字串的長度用第一週教的 strlen() 即可。
+
+```cpp
+///Week03-2 Palindrome (CPE顆星廣場-一顆星(難))
+///step03 只解決迴文/回文,正讀、反讀,都一樣
+/// for迴圈,前面到後面 vs. 後面到前面
+#include <stdio.h>
+#include <string.h> ///strlen()
+int main()
+{
+	char line[30];
+
+	scanf("%s", line);
+
+	int N = strlen(line);
+	int bad=0;
+	for(int i=0; i<N; i++){
+        if( line[i] != line[N-1-i] ) bad=1;
+	}
+	if(bad==1) printf("它不是迴文\n");
+	else printf("它是迴文\n");
+}
+```
+
+## step02-1_題目還有「鏡像字」的問題。有些字母左右看起來是一樣的。所以老師用最暴力的方法,有一堆if else 判斷連在一起,把程式都比對出來。
+
+```cpp
+///Week03-3.cpp step02-1 mirrored 鏡像字的函式
+/// char mirrored_char(char c) 可把鏡像字傳出來
+#include <stdio.h>
+char mirrored_char(char c)
+{
+    if(c=='A') return 'A';
+    else if(c=='E') return '3';
+    else if(c=='H') return 'H';
+    else if(c=='I') return 'I';
+    else if(c=='J') return 'L';
+    else if(c=='L') return 'J';
+    else if(c=='M') return 'M';
+    else if(c=='O') return 'O';
+    else if(c=='S') return 'I';
+    else if(c=='T') return 'T';
+    else if(c=='U') return 'U';
+    else if(c=='V') return 'V';
+    else if(c=='W') return 'W';
+    else if(c=='X') return 'X';
+    else if(c=='Y') return 'Y';
+    else if(c=='Z') return '5';
+    else if(c=='1') return '1';
+    else if(c=='2') return 'S';
+    else if(c=='3') return 'E';
+    else if(c=='5') return 'Z';
+    else if(c=='8') return '8';
+    else return ' ';
+}
+int main()
+{
+
+}
+```
+
+## step02-2_有了鏡像字母,便能判斷鏡像字串。也就是結合 step01-2 及 step02-1 的程式。不過 step02-1 的 if判斷太暴力了, 我們改用比較優雅的寫法, 去逐個比對字母(查表)再回覆鏡像字母是誰。最後, 用迴圈來看某個字串是不是鏡像字。
+
+```cpp
+///Week03-4.cpp step02-2 mirrored 鏡像字的函式 用字串+迴圈,簡化
+/// char mirrored_char(char c) 可把鏡像字傳出來
+#include <stdio.h>
+#include <string.h>
+char mirrored_char(char c)
+{
+    char line1[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+    char line2[] = "A   3  HIL JM O   2TUVWXY51SE Z  8 ";
+    for(int i=0; line1[i]!=0; i++){
+        if(line1[i]==c) return line2[i];
+    }
+    return ' ';
+}
+int main()
+{
+    char line[30];
+    scanf("%s", line);
+
+    int N = strlen(line);
+    int bad = 0;
+    for(int i=0; i<N; i++){
+        char c1 = line[i];
+        char c2 = mirrored_char(line[N-1-i]);
+        if(c1 != c2) bad = 1;
+    }
+    if(bad==0) printf("它是鏡像字\n");
+    else printf("它不是鏡像字\n");
+}
+```
+
+## step03-1_今天第一節課那個 UVA401 Palindromes 那題大魔王,表面上step01-1完成了8成, 其實只完成一部分。要再配合 step01-2, step02-1, step02-2 全部合在一起, 才能正確。這裡老師使用 testPalindrome() 與 testMirrored() 這兩個函式, 讓程式碼都控制在 10行以內, 讓思緒比較清楚。最後用4個if()來排列組合出全部的結果。
+
+```cpp
+///Week03-5 Palindrome (CPE顆星廣場-一顆星(難))
+//step1: Input Ouput  scanf("%s", line)
+//step2: while() + scanf() == 1
+#include <stdio.h>
+#include <string.h>
+char mirrored_char(char c)
+{
+    char line1[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+    char line2[] = "A   3  HIL JM O   2TUVWXY51SE Z  8 ";
+    for(int i=0; line1[i]!=0; i++){
+        if(line1[i]==c) return line2[i];
+    }
+    return ' ';
+}
+int testPalindrome(char line[30])
+{
+	int N = strlen(line);
+	int bad=0;
+	for(int i=0; i<N; i++){
+        if( line[i] != line[N-1-i] ) bad=1;
+	}
+	if(bad==1) return 0;// printf("它不是迴文\n");
+	else return 1;//printf("它是迴文\n");
+}
+int testMirrored(char line[30])
+{
+    int N = strlen(line);
+    int bad = 0;
+    for(int i=0; i<N; i++){
+        char c1 = line[i];
+        char c2 = mirrored_char(line[N-1-i]);
+        if(c1 != c2) bad = 1;
+    }
+    if(bad==0) return 1;//printf("它是鏡像字\n");
+    else return 0;//printf("它不是鏡像字\n");
+}
+int main()
+{
+	char line[30];
+
+	while( scanf("%s", line) == 1 ){
+
+		printf("%s", line);
+		int p = testPalindrome(line); //use your function to test
+		int m = testMirrored(line);   //use your function to test
+
+		if(p==0 && m==0) printf(" -- is not a palindrome.\n\n");
+		if(p==1 && m==0) printf(" -- is a regular palindrome.\n\n");
+		if(p==0 && m==1) printf(" -- is a mirrored string.\n\n");
+		if(p==1 && m==1) printf(" -- is a mirrored palindrome.\n\n");
+	}
+}
+```
+
+## step03-2
+
+- 0. 安裝 Git, 開啟 Git Bash
+- 1. 進入桌面 cd desktop 、再複製 git clone 你的倉庫連結 、再進入對應的目錄 cd 2022c
+- 2. 使用 start  .  開啟檔案總管, 把今天的 week03 的 5個程式放好
+- 3. 將今天的修改加入帳冊 git add . (可配合 git status 來看紅色、綠色)
+- 4. 再認可、確認今天的修改 git commit -m "你要留的訊息"
+- 4.0. 記得要 git config --global user.email jsyeh@mail.mcu.edu.tw
+- 4.0. 記得要 git config --global user.name jsyeh
+- 4.1. git commit -m "add week03"
+- 5. 推送上雲端 git push
