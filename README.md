@@ -165,6 +165,14 @@ int main()
 
 
 # Week02
+程式設計二 2023-02-24 Week02
+1. 考試：史上最多2的一天
+2. 複習 scanf 及 while迴圈，以「勇敢的戰士」為例
+3. 迴文 Palindrome 與迴圈
+4. 變數宣告、作業問題、實習問題
+5. 同學問的問題（防毒軟體、繳譯、測資、截圖）（暱名）
+6. 五大困擾：英文看不懂、看懂題目不知道要做什麼、知道要做什麼卻不會寫、知道怎麼寫卻找不出問題
+
 
 1. step01-1_請試著寫勇敢的戰士這題,在瘋狂程設-CPE顆星廣場-一顆星-UVA10055 Hashmat the brave warrior 的題目。英文題目看不懂, 就先不要看。看數字後,可能就先有靈感,寫寫看, 簡單測資中, 右邊大、左邊小, 所以 int ans = b - a; 即可。配合 while迴圈, 印出來好像是對的 (還沒寫完)。請在瘋狂程設裡, 用簡單測資執行, 截圖week02-1.png上傳,  程式在 CodeBlocks存成 week02-1.cpp
 
@@ -178,7 +186,8 @@ int main()
 
 6. step03-1_請將今天的程式, 利用 Git 備份到 GitHub 上, 再上傳截圖證明
 
-## step00-0_有人問大小寫轉換
+## step00-0_上課之前,有同學問實習課的題目,簡單的題目,卻想要用高級while迴圈配 scanf()試試
+有人問大小寫轉換
 
 ```cpp
 #include <stdio.h>
@@ -194,7 +203,7 @@ int main()
 }
 ```
 
-## step01-0
+## step01-0_今天考試題目「最多2的一天」, 老師在考前再複習一次, 並在考後講解同學出錯的幾個地方。
 
 ```cpp
 #include <stdio.h>
@@ -218,7 +227,7 @@ int main()
 }
 ```
 
-## step01-1
+## step01-1_請試著寫勇敢的戰士這題,在瘋狂程設-CPE顆星廣場-一顆星-UVA10055 Hashmat the brave warrior 的題目。英文題目看不懂, 就先不要看。看數字後,可能就先有靈感,寫寫看, 簡單測資中, 右邊大、左邊小, 所以 int ans = b - a; 即可。配合 while迴圈, 印出來好像是對的 (還沒寫完)。請在瘋狂程設裡, 用簡單測資執行
 ```cpp
 ///Week02-1.cpp step01-1 while + scanf() ==2
 #include <stdio.h>
@@ -236,7 +245,7 @@ int main()
 }
 ```
 
-## step01-2
+## step01-2_解決正負號的問題, 利用if判斷來處理
 ```cpp
 ///Week02-2.cpp step01-2 if() to compare big and small
 //10 12
@@ -260,7 +269,7 @@ int main()
 }
 ```
 
-## step02-1
+## step02-1_講解long long int 的歷史故事, Intel vs. AMD 的 32 64位元之爭的結果 與相容性的考量。最後是%lld的讀法,及scanf()回傳值的意思
 ```cpp
 //Week02-1.cpp step01-1 while + scanf() ==2
 #include <stdio.h>
@@ -293,7 +302,7 @@ int main()
 
 ```
 
-## step02-2
+## step02-2_介紹C++課本的 std的 cin, cout, endl 與大於大於、小於小於的語法觀念
 
 ```cpp
 //Week02-4.cpp step02-2 C++ 
@@ -313,7 +322,7 @@ int main()
 }
 ```
 
-## step02-3
+## step02-3_介紹 using namespace std; 設定預設使用的命名空間namespace 讓我們後面在使用 cin cout時, 可以少打一些字
 ```cpp
 ///Week02-5.cpp step02-3 使用 namespace
 #include <iostream>
@@ -330,7 +339,7 @@ int main()
 }
 ```
 
-## step03-1
+## step03-1_介紹變數宣告的時機點、作業問題、實習題目遇到的問題等, 最後再示範Git上傳的方法
 0. 安裝 Git, 開啟 Git Bash
 0.1. 桌面的葉正聖老師資料夾裡
 0.2. 要按2x下一步
@@ -360,6 +369,11 @@ int main()
 
 
 # Week03
+程式設計二 2023-03-03 Week03
+1. 考試: 勇敢的戰士
+2. 主題: 迴文 Palindrome
+3. 主題: 全字母句 (整合字母、字串、陣列、迴圈)
+4. 象棋
 
 ## step01-0_考試勇敢的戰士, 考前老師示範複習, 老師再講解同學出錯的地方。之前再講解今天想介紹有趣的象棋程式。
 
