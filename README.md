@@ -694,3 +694,206 @@ int main()
 - 4.0. 記得要 git config --global user.name jsyeh
 - 4.1. git commit -m "add week03"
 - 5. 推送上雲端 git push
+
+
+# Week04
+10 Week04
+1. 考試：鏡像字
+2. 主題：排序
+3. 主題：指標
+4. 主題：字串排序
+5. Tell me the frequencies vs. 全字母句
+6. 作業評分 & 實習題目
+
+提醒作業有問題 or 缺課的同學
+1. 關於 Git 指令, FB社團裡, 資傳一甲的影片, 從詳細, 變精簡。
+2. 上課的錄影、截圖: Teams有完整3小時版(較模糊), 每週的小段的原始錄影截圖, FB社團裡比較精簡
+3. 作業的排版格式、語法問題
+
+## step01-0_考試「鏡像字」考前老師示範兩種寫法, 考後講解幾個同學出錯的地方
+
+```cpp
+#include <stdio.h>
+int main()
+{
+	char c, ans;
+	scanf("%c", &c);
+	
+	if(c=='A') ans = 'A';
+	else if(c=='E') ans =  '3';
+	else if(c=='H') ans =  'H';
+	else if(c=='I') ans =  'I';
+	else if(c=='J') ans =  'L';
+	else if(c=='L') ans =  'J';
+	else if(c=='M') ans =  'M';
+	else if(c=='O') ans =  'O';
+	else if(c=='S') ans =  '2';
+	else if(c=='T') ans =  'T';
+	else if(c=='U') ans =  'U';
+	else if(c=='V') ans =  'V';
+	else if(c=='W') ans =  'W';
+	else if(c=='X') ans =  'X';
+	else if(c=='Y') ans =  'Y';
+	else if(c=='Z') ans =  '5';
+	else if(c=='1') ans =  '1';
+	else if(c=='2') ans =  'S';
+	else if(c=='3') ans =  'E';
+	else if(c=='5') ans =  'Z';
+	else if(c=='8') ans =  '8';
+	else ans =  ' ';
+	
+	printf("%c\n", ans);
+}
+```
+
+另一種寫法
+
+```cpp
+#include <stdio.h>
+int main()
+{
+	char table1[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+	char table2[] = "A   3  HIL JM O   2TUVWXY51SE Z  8 ";
+	
+	char c, ans=' ';
+	scanf("%c", &c);
+	
+	for(int i=0; table1[i]!=0; i++){
+		if(c==table1[i]) ans = table2[i];
+	}
+
+	printf("%c\n", ans);
+}
+```
+
+## step01-1_本週主題是pointer指標, 在課本的第4章, 圖像的意思,是有個變數, 心裡放的值是位址、位址, 要寫它要去偷看哪裡。我們先了解變數的4個特質 int a = 10; 分別代表前3個性質(形狀、名字、值), &a 則代表第4個性質(它在哪裡、住址、位置), 請用 CodeBlocks 實作 week04-1.cpp 印出值及它們的位址, 執行截圖上傳 week04-1.png
+
+```cpp
+///Week04-1.cpp step01-1 想要理解
+///step01-1_本週主題是pointer指標,
+///在課本的第4章, 圖像的意思,是有個變數, 心裡放的值是住址、位址, 要寫它要去偷看哪裡。
+///我們先了解變數的4個特質 int a = 10; 分別代表前3個性質(形狀、名字、值),
+///&a 則代表第4個性質(它在哪裡、住址、位置)
+#include <stdio.h>
+int main()
+{
+    int a = 10;
+    printf("a的值是%d\n", a);
+    printf("a的家在%d\n", &a);
+
+    int b = 20;
+    printf("b的值是%d\n", b);
+    printf("b的家在%d\n", &b);
+
+    int c = 30;
+    printf("c的值是%d\n", c);
+    printf("c的家在%d\n", &c);
+}
+
+```
+
+## step02-1_課本介紹指標變數 pointer to int 寫法是 int *p = &a 裡面會放 a的位址。請用 C Tutor Python 執行, 再截圖 week04-2.png (程式碼則是存成 week04-2.cpp)
+
+```cpp
+///Week04-2.cpp step02-1 指標變數 pointer
+#include <stdio.h>
+int main()
+{
+    int a = 10;
+    printf("a在哪裡? %d\n", &a);
+
+    int *p = &a;
+
+    printf("指標p心裡放的值是&a 也就是%d\n", p);
+    printf("p指到的那一個盒子的值是:%d\n", *p );
+}
+```
+
+## step02-2_接下來有2個指標的版本, int *p1 = &a; int *p2 = &b; 印出不同變數的值。再來 p1 = p2; 太誇張 p1 直接喜歡 p2 喜歡的女生, 結果 p1 p2 都指到同一個變數。請用 C Tutor Python 執行, 再截圖 week04-3.png (程式碼則是存成 week04-3.cpp)
+
+```cpp
+///Week04-3.cpp step02-2 指標變數 pointer
+#include <stdio.h>
+int main()
+{
+    int a = 10, b = 20;
+
+    int * p1 = &a;
+    int * p2 = &b;
+
+    printf("p1指到的變數的值是 %d\n", *p1 );
+    printf("p2指到的變數的值是 %d\n", *p2 );
+
+    p1 = p2;
+    printf("p1指到的變數的值是 %d\n", *p1 );
+    printf("p2指到的變數的值是 %d\n", *p2 );
+
+    p1 = &a;
+    printf("p1指到的變數的值是 %d\n", *p1 );
+    printf("p2指到的變數的值是 %d\n", *p2 );
+}
+```
+
+## step02-3_指標變數很神奇, 除了可以偷看別人的值, 也可以偷改別人的值。就兩個步驟, 先在指標變數的心裡, 放另一個正常變數的&a 位置。再來, 使是使用 *p 當成是神奇的功能, 讓你直接操作那個正常的變數。我們讓兩個變數 p1 p2 都指到 &a, 接下來都能改變a的值。請用 C Tutor Python 執行, 再截圖 week04-4.png (程式碼則是存成 week04-4.cpp)
+
+```cpp
+///Week04-4.cpp step02-3
+///要改它的值
+#include <stdio.h>
+int main()
+{
+    int a = 10, b = 20;
+    int *p1, *p2; ///合在一起的宣告法 都要打星星
+    printf("a:%d b:%d\n", a, b);
+
+    p1 = &a;
+    *p1 = 99;  ///step02-3 也可以改指到的東西哦
+    printf("a:%d b:%d\n", a, b);
+
+    p2 = p1;
+    *p2 = 77;
+    printf("a:%d b:%d\n", a, b);
+}
+```
+
+
+## step03-1_下週考試題目是「全字母句」合英文文法的句子,裡面用了26個字母。比較簡單好記的一個句子是 The quick brown fox jumps over a lazy dog 解題策略是用 for迴圈、while迴圈、陣列, 來逐一檢查、填進對應的陣列裡, 最後再用for迴圈來看是不是都有填值。請用 CodeBlocks實作 week04-5.cpp 用小黑執行時, 輸入全字母句的英文, 結束輸入時按 Ctrl-Z 便會跑出答案。截圖上傳 week04-5.png
+
+```cpp
+///考試題目是 全字母句 解題策略: for, while, 陣列
+///The quick brown fox jumps over a lazy dog
+#include <stdio.h>
+int main()
+{
+    int used[26]={0,0,0,0}; ///陣列宣告, 沒寫齊全的話,都會補0
+    ///used[0] 對應 'A'
+    ///used[1] 對應 'B'
+    ///used[25] 對應 'Z'
+    char c;
+    while( scanf("%c", &c) == 1 ){
+        if(c>='A' && c<='Z'){
+            int i = c - 'A';
+            used[i] ++;
+        }
+        if(c>='a' && c<='z'){
+            int i = c - 'a';
+            used[i] ++;
+        }
+    }
+    int bad=0; ///一開始還沒壞掉
+    for(int i=0; i<26; i++){
+        if( used[i]==0 ) bad=1; ///有字母沒用到? 死掉了
+    }
+    if(bad==0) printf("Yes");
+    else printf("No");
+}
+```
+## step03-2_請將今天的程式, 利用 Git 備份到 GitHub 上, 再上傳截圖 week04-5.png 證明
+
+
+- 0. 安裝 Git 開啟 Git Bash
+- 1. 進桌面 cd desktop 複製倉庫 git clone https網址 再進入cd 2022c
+- 2. 開檔案總管 start . 整理目錄
+- 3. 加入 git add .
+- 4. 確認 git commit -m week04  (記得要先config好)
+- 5. 推送 git push
