@@ -910,3 +910,187 @@ int main()
 - 3. 加入 git add .
 - 4. 確認 git commit -m week04  (記得要先config好)
 - 5. 推送 git push
+
+
+# Week05
+
+## step01-0_考試「全字母句」考前示範幾種寫法, 考後講解同學遇到的問題
+
+```cpp
+#include <stdio.h>
+
+//int used[26]; //all zero
+
+int main()
+{
+	int used[26] = {}; //bad value inside, so...
+	
+	char c;
+	while( scanf("%c", &c) == 1 ){
+		if(c>='A' && c<='Z') used[ c-'A' ]++;
+		if(c>='a' && c<='z') used[ c-'a' ]++;
+	}
+	
+	int bad=0;
+	for(int i=0; i<26; i++){
+		if(used[i]==0) bad++;
+	}
+	
+	if(bad==0) printf("Yes");
+	else printf("No");
+
+}
+```
+
+## step01-1_今天上課的第一個重點是指標、陣列, 講解「指標就是陣列」、「陣列就是指標」的觀念。請用 CodeBlocks實作week05-1.cpp, 看到指標、陣列, 都拿來當陣列使用。
+
+```cpp
+///Week05-1.cpp step01-1
+///指標,就是陣列。陣列,就是指標。
+#include <stdio.h>
+int main()
+{
+    int a[10]={1,2,3,4,5,6,7,8,9,10};
+    int * p = a;
+    for(int i=0; i<10; i++){
+        printf("a[i]:%d -- p[i]:%d\n", a[i], p[i]);
+    }
+}
+```
+
+
+## step02-1_老師帶家寫 LeetCode的第9題, 是Easy題。判斷迴圈。因為這題有一些陷阱, 所以我們逐一解決問題。題目裡沒有 main()函式, 所以如果要debug時, 要在 CodeBlocks裡, 補上 main()函式。但在LeetCode這題只要寫完 bool isPalindrome(int x) 函式就行了。要先把負數解決, 再使用剝皮法, 要小心 x會被剝光光, 所以要有分身 int x2 = x; 備份值, 以便 if(r==x2) 確認。另外因為1234567899 這種很長的數字反過來時會超過int所以要用 long long int r=0;
+
+https://leetcode.com/problems/palindrome-number
+
+在 CodeBlocks 執行的程式
+```cpp
+//Week05-2.cpp step02-1
+#include <stdio.h> //不用寫main()因為題目裡偷放
+bool isPalindrome(int x){
+    if(x<0) return false;
+
+    //x:1234567   r:0
+    //        7     7 = 0*10  +7
+    //       6     76 = 7*10  +6
+    //      5     765 = 76*10 +5
+    //     4     7654 = 765*10+4
+    int r=0, x2=x;///x的分身x2, 因為x會剝皮剝光光
+	///之後要把 r 改成 long long int r = 0;
+    while(x>0){ //剝皮法
+        r = r*10 + x%10;//取出x的個位數 (剝皮)
+        printf("x:%d r:%d\n", x, r);
+
+        x = x /10;
+
+    }
+    ///如果倒過來的結果r
+    if(r==x2) return true;
+    else return false;
+}
+int main()
+{
+    isPalindrome(121);
+}
+```
+
+
+C 的版本, 
+
+C++ 的版本, 會用到 class 及 public 等, 同學還沒有學到的東西
+```cpp
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x<0) return false;
+        
+        long long int r=0, x2=x;
+        while(x>0){
+            r = r*10+x%10;
+            x = x / 10;
+        }
+        if(x2==r) return true;
+        else return false;
+    }
+};
+```
+
+
+## step03-1_今天最後一題, 是解 LeetCode 26 (去除重覆的)。在解 LeetCode時, 習慣都是要寫一個函式, 來解決問題。本題是 int removeDuplicate(int *nums, int numSize) 函式, 最後會回傳「有幾個不同的數字」而且這些數字, 都被推到陣列的最左邊排好。
+
+LeetCode: 26. Remove Duplicates from Sorted Array
+
+```cpp
+int removeDuplicates(int* nums, int numsSize){
+//出來整數k 有幾個數字
+                   //指標,就是陣列,
+    int k=1;
+    for(int i=1; i<numsSize; i++){
+        if(nums[i-1]==nums[i]) continue; ///相同,不做事
+        else{///不相同的,要搬家
+            nums[k] = nums[i];
+            k++;
+        }
+    }
+    return k; //先亂給答案, 騙出、套出它的答案
+}
+```
+
+```cpp
+int removeDuplicates(int* nums, int numsSize){
+    int k=1;
+    for(int i=1; i<numsSize; i++){
+        if( nums[i] == nums[i-1] ) continue;
+        else{
+            nums[k] = nums[i];
+            k++;
+        }
+    }
+    return k;
+}
+```
+
+下面程式, 是為了使用 C Tutor Python 使用指標把程式執行過程畫清楚, 而改寫的程式碼
+https://pythontutor.com/c.html#mode=edit 
+
+```cpp
+#include <stdio.h>
+int *p1, *p2, *pk;
+int removeDuplicates(int* nums, int numsSize){
+    int k=1;
+    for(int i=1; i<numsSize; i++){
+        p1 = &nums[i-1];
+        p2 = &nums[i];
+        pk = &nums[k];
+        if( nums[i-1] == nums[i] ) continue;
+        else{
+            nums[k] = nums[i];
+            k++;
+        }
+    }
+    return k;
+}
+int main()
+{
+    int a[10]={0,0,1,1,1,2,2,3,3,4};
+    int k = removeDuplicates(a, 10);
+    for(int i=0; i<k; i++){
+      printf("%d ", a[i]);
+    }
+}
+```
+
+
+## step03-2_請將今天的程式(week05-1.cpp week05-2.cpp week05-3.cpp), 利用 Git 備份到 GitHub 上
+
+
+- 0. 安裝 Git 開啟 Git Bash
+- 1. 進入桌面 cd desktop  複製 git clone https網址  再進入 cd 2022c
+- 2. 開檔案總管 start .  再整理目錄 week05
+- 3. 加入帳冊 git add .
+- 4. 確認修改
+- 4.0. git config --global user.email jsyeh@mail.mcu.edu.tw
+- 4.0. git config --global user.name jsyeh
+- 4.1. git commit -m week05
+- 5. 推送上雲端 git push
+
