@@ -1094,3 +1094,152 @@ int main()
 - 4.1. git commit -m week05
 - 5. 推送上雲端 git push
 
+
+# Week06
+
+## step01-0_考試「Remove Duplicates」去除重覆。這題是上週介紹LeetCode時,帶大家寫的題目。考前複習、考後講解出錯的地方,像是排版問題、沒有return、for從哪裡開始等。。另外上課前, 介紹LeetCode或CPE等, 有位資深高手分享 Solver 解問題 vs. Builder動手做東西 的分析。
+
+```cpp
+#include <stdio.h>
+//請完成下面的 removeDuplicates()函式
+int removeDuplicates(int* nums, int numsSize){
+	int k = 1;
+	for(int i=1; i<numsSize; i++){
+		if( nums[i-1] != nums[i] ){
+			nums[k] = nums[i];
+			k++;
+		}
+	}
+	return k;
+}
+//請完成上面的 removeDuplicates()函式
+//已幫你準備好下面的 int main()函式, 請不要動它
+int main()
+{
+    int a[100];
+    int N = 0;
+    for(int i=0; scanf("%d", &a[i])==1; i++){
+        N++;
+    }
+    int k = removeDuplicates(a, N);
+    for(int i=0; i<k; i++){
+        printf("%d ", a[i]);
+    }
+}
+```
+
+## step01-2_今天主題是檔案, 我們先用大家大一上熟悉的 Hello World 範例, 配合新教的「檔案的指標」在 fopen開啟檔案後, 便能把 printf()改寫成 fprintf() 來改成檔案輸出。
+
+```cpp
+///Week06-1.cpp step01-1 了解檔案的輸出輸入
+#include <stdio.h>
+
+int main()
+{
+    ///step01-1 檔案的指標,要開啟檔案
+    FILE *fout = fopen("output.txt","w+");
+    ///printf("Hello World\n");
+    fprintf(fout, "Hello World\n");
+}
+```
+
+## step02-1_有了 fopen() 及 fprintf() 我們再介紹 fscanf() 原理差不多, 不過就可以成功把檔案的內容讀進來了。在瘋狂程設、CPE、LeetCode裡,都不會用到 FILE 相關, 因為它們是「Solver解題競賽」型, 不會動到檔案。如果是「Builder動手建東西」型的人, 可能會常用到檔案。
+
+```cpp
+///Week06-2.cpp step02-1 再試試 scanf() 前面加f
+#include <stdio.h>
+int main()
+{
+ ///FILE *fout = fopen("output.txt", "w+");///write
+    FILE * fin = fopen("output.txt", "r"); ///read
+
+ ///for(int i=0; i<100; i++){
+ ///    fprintf(fout, "Hello World\n");
+ ///}
+    char line[3000];
+    fscanf(fin, "%s", line);
+    printf("你讀到了%s\n", line);
+
+    fscanf(fin, "%s", line);
+    printf("你讀到了%s\n", line);
+}
+```
+
+## step02-2_接下來要複習上學期的排序, 首先使用Bubble Sort要用到 迴圈、陣列、if判斷、交換等。老師從裡面到外面, 一步步建出來。
+
+```cpp
+///Week06-3.cpp step02-2 排序 sort
+///可能會用到 迴圈 while() for(), 陣列, if判斷, 交換
+#include <stdio.h>
+int main()
+{
+    int a[10] = {9,8,7, 1,2,3, 6,5,4, 0};
+
+    ///泡泡排序 Bubble Sort
+    for(int k=0; k<10-1; k++){ ///重覆做很多次...10次? 9次就可以了
+        for(int i=0; i<10-1; i++){
+            if( a[i] > a[i+1] ){
+                int temp = a[i];///不對就交換 多一個變數
+                a[i] = a[i+1];
+                a[i+1] = temp;
+            }
+        }
+
+        for(int i=0; i<10; i++){
+            printf("%d ", a[i] );
+        }
+        printf("\n");
+    }
+}
+```
+
+## step03-1_自己寫 bubble sort 後, 其實程式碼真的要背, 也背不太出來。背完,很可能幾週後就忘了。如果了解過程、講得出過程、演得出來, 就能輕鬆寫出來。看了 YouTube裡有個2千萬點閱的影片 示範各種 sorting algorithm 配樂畫出來, 我們想要用裡面極快速的 Quick Sort 快速排序法。程式碼看似簡單, 只要 include stdlib.h 就能使用 qsort(a, 個數, sizeof(int), compare) 就可以, 但要寫出 void compare()函式有點難度。
+
+```cpp
+///Week06-4.cpp step03-1 介紹很多排序法   100萬*100萬=10000億次
+///大一上教的Bubble Sort 與 Selection Sort都很慢,但2層迴圈搞定
+///Quick Sort 超級快, ex. 100萬個數字, 約跑2千萬次
+#include <stdio.h>
+#include <stdlib.h> ///為了 qsort()函式
+int a[10] = {9,8,7,1,2,3,6,5,4,0}; ///數字太少,其實沒差很多,只是例子
+int compare(const void *p1, const void *p2)
+{
+    return *(int*)p1 - *(int*)p2;
+}
+int main()
+{
+    qsort(a, 10, sizeof(int), compare);
+    for(int i=0; i<10; i++){
+        printf("%d ", a[i] );
+    }
+}
+```
+
+## step03-2_看了 C 的 qsort() 要自己打造 int compare()函式, 裡面的那個指標有點難懂、容易寫錯。所以今天最後一節課, 老師教你 C++ 的 algorithm 裡的 std::sort(a, a+10)可以把 int a[10] 裡的前10項拿來排序。
+
+```cpp
+///Week06-5.cpp step03-2 想要用更簡單呼叫的sort方法
+/// std::sort()
+#include <stdio.h>
+#include <algorithm>  ///便會有 std::sort()能用
+int a[10] = {9,8,7,1,2,3,6,5,4,0};
+int main()
+{
+    std::sort(a, a+10);
+
+    for(int i=0; i<10; i++){
+        printf("%d ", a[i]);
+    }
+}
+```
+
+## step03-3_
+
+- 0. 安裝Git 開啟 Git Bash
+- 1. cd desktop 進桌面 git clone https網址 再 cd 2022c
+- 2. start . 開檔案總管, 整理 week06 的程式
+- 3. git add . 把修改加到帳冊
+- 4.0. git config --global user.email jsyeh@mail.mcu.edu.tw
+- 4.0. git config --global user.name jsyeh
+- 4.1. git commit -m week06
+- 5. git push 推送上雲端
