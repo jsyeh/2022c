@@ -1243,3 +1243,275 @@ int main()
 - 4.0. git config --global user.name jsyeh
 - 4.1. git commit -m week06
 - 5. git push 推送上雲端
+
+
+# Week07 清明連假
+
+# Week08
+程式設計二 2023-04-07 Week08
+1. 考試: 排序
+2. 主題: C++ vector
+3. 主題: 程式會考
+4. 主題: LeetCode Study Plan
+
+## step01-0_考試「排序」考前示範4種方法、考後講解同學出錯的地方
+
+```cpp
+//Method 1: Bubble Sort
+#include <stdio.h>
+int main()
+{
+	int a[100];
+	for(int i=0; i<100; i++){
+		scanf("%d", &a[i] );
+	}	
+	for(int k=0; k<100; k++){
+		for(int i=0; i<100-1; i++){
+			if(a[i] > a[i+1]){
+				int temp=a[i];
+				a[i] = a[i+1];
+				a[i+1] = temp;
+			}
+		}
+	}
+
+	for(int i=0; i<100; i++){
+		if(i%10==0 && i!=0) printf("\n");
+		printf(" %d", a[i] );
+	}
+}
+```
+
+```cpp
+//Method 2: Selection Sort
+#include <stdio.h>
+int main()
+{
+	int a[100];
+	for(int i=0; i<100; i++){
+		scanf("%d", &a[i] );
+	}
+
+	for(int i=0; i<100; i++){
+		for(int j=i+1; j<100; j++){
+			if(a[i] > a[j]){
+				int temp=a[i];
+				a[i] = a[j];
+				a[j] = temp;
+			}
+		}
+	}
+
+	for(int i=0; i<100; i++){
+		printf(" %d", a[i] );
+		if(i%10==9 && i!=99) printf("\n");
+	}
+}
+```
+
+不過瘋狂程設這題有限制不能使用 sort 函式, 所以下面2種寫法會無法使用。
+
+```cpp
+//Method 3: qsort
+#include <stdio.h>
+#include <stdlib.h>
+
+int compare(const void*p1, const void*p2)
+{
+	return *(int*)p1 - *(int*)p2;
+}
+int main()
+{
+	int a[100];
+	for(int i=0; i<100; i++){
+		scanf("%d", &a[i] );
+	}
+	
+	qsort(a, 100, sizeof(int), compare);
+	
+	for(int i=0; i<100; i++){
+		printf(" %d", a[i]);
+		if(i%10==9&&i!=99) printf("\n");
+	}
+}
+```
+
+```cpp
+//Method 4: std::sort
+#include <stdio.h>
+#include <algorithm>
+int main()
+{
+	int a[100];
+	for(int i=0; i<100; i++){
+		scanf("%d", &a[i] );
+	}
+
+	std::sort(a, a+100);
+
+	for(int i=0; i<100; i++){
+		printf(" %d", a[i] );
+		if(i%10==9 && i!=99) printf("\n");
+	}
+}
+```
+
+
+## step01-1_今天的主題是C++好用的「vector」,比傳統C的Array陣列好用的地方,在它的長度可以變化,不用事先給定。我們先了試著 include vector 後, 利用大於小於,把 vector<int> a這個變數。如果要事先準備好大小, 就用 vector<int> a(3) 開3格的大小。後面使用的地方與大一上學的array陣列一樣。
+
+```cpp
+///Week08-1.cpp 想要認識 vector
+#include <stdio.h>
+#include <vector> ///step01-1
+///using namespace std; ///可省 std::
+int main()
+{
+    std::vector<int> a(3); ///也可說準備好3格
+    ///不知道大小沒關係,可用 push_back加大
+
+    a[0] = 100; ///陣列的使用
+    a[1] = 101;
+    a[2] = 102;
+    for(int i=0; i<3; i++){
+        printf("%d ", a[i] );
+    }        ///陣列的使用
+}
+```
+
+## step01-2_C++的vector有另外一種宣告的方法, 是從另一個傳統的陣列,把值拿來推到後面,宣告時, 用 vector<int> a2(陣列開始、陣列結束); 就會幫你準備好了。
+
+```cpp
+#include <stdio.h>
+#include <vector>
+using namespace std;
+int main()
+{
+    int a1[10] = {9,8,7,1,2,3,6,5,4,0};
+    vector<int> a2(a1, a1+10);
+    ///你可以把傳統的陣列,轉成C++的vector
+
+
+    for(int i=0; i<10; i++){
+        printf("%d ", a2[i] );
+    }
+}
+```
+
+## step02-1_接下來要介紹 vector神奇的地方,是它可以伸縮, 利用 push_back(放值)可以越來越長。到底有多長呢 可以使用 size()來查它的大小。因此, for迴圈的寫法, 會有另外一種寫法, 用 size()來決定跑幾次。
+
+```cpp
+///Week08-3.cpp 結合 week08-1 week08-2 配上 push_back()
+#include <stdio.h>
+#include <vector>
+#include <algorithm>///step02-1b 排序
+using namespace std;
+int main()
+{
+    vector<int> a(2);
+    a[0] = 100;
+    a[1] = 101;
+    for(int i=0; i<a.size(); i++){
+        printf("%d ", a[i] );
+    }
+    printf("現在的 a 的大小是: %d\n", a.size() );
+
+    a.push_back(102); ///神奇進階版的陣列
+    a.push_back(103); ///可以伸縮,越來越長
+    a.push_back(0);
+
+    sort(a.begin(), a.end()); ///step02-1b 排序
+
+    for(int i=0; i<a.size(); i++){
+        printf("%d ", a[i] );
+    }
+    printf("現在的 a 的大小是: %d\n", a.size() );
+}
+```
+
+## step02-2_要開始寫LeetCode的學習計畫StudyPlan,請登入你的LeetCode帳號, 點上面的 Problems 右邊有 Study Plan, 選最基礎的 LeetCode 75 的 Level 1 開始練習。每天兩題,今天先寫第1題 1480 Running Sum of 1d Array。使用 vector<int> 神奇的陣列,讓程式比較好寫。
+
+```cpp
+//1048. Running Sum of 1d Array
+class Solution {
+public:
+    vector<int> runningSum(vector<int>& nums) {
+        int N = nums.size();
+
+        vector<int> ans(N);
+        ans[0] = nums[0];
+
+        for(int i=1; i<N; i++){
+            ans[i] = ans[i-1] + nums[i];
+        }
+        return ans;
+    }
+};
+```
+
+## step03-1_今天最後的程式, 是想帶大家寫實習課出的題目, 因為這些題目,將會是這學期「資訊學院程式設計會考」的上機考題。每一題都要(不看手機)的情況下寫出來。多用練習模式會有幫助。請把第07週的實習題目 第3題(星星等腰三角)or第4題(自訂max() min()函式) 用練習模式寫出來。
+
+```cpp
+//Week08-5a (SOIT107_ADVANCE_012) 進階題：星星等腰三角 : 輸入1個正整數n，作為輸出星星三角的層數 
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	
+	for(int i=1; i<=n; i++){
+	
+		int space=n-i, star=i*2-1;
+		//printf("%d %d ", space, star);
+		//printf("%d\n", i);
+		for(int k=1; k<=space; k++) printf(" ");
+		for(int k=1; k<=star; k++) printf("*");
+		printf("\n");
+	}
+}
+```
+
+```cpp
+//Week08-5b (SOIT107_ADVANCE_013_C_C++) 進階題：利用自訂函式最大值max與最小值min求出兩者之差 : 輸入四個正整數後，利用函式判斷最大值與最小值，並輸出最大值減最小值之差 
+#include<iostream>
+using namespace std;
+//Todo: Write 
+//int max(int a, int b, int c, int d) {..}
+//int min(int a, int b, int c, int d) {..}
+int max(int a, int b, int c, int d)
+{
+	if(a>=b && a>=c && a>=d) return a;
+	if(b>=a && b>=c && b>=d) return b;
+	if(c>=a && c>=b && c>=d) return c;
+	if(d>=a && d>=b && d>=c) return d;
+}
+int min(int a, int b, int c, int d)
+{
+	if(a<=b && a<=c && a<=d) return a;
+	if(b<=a && b<=c && b<=d) return b;
+	if(c<=a && c<=b && c<=d) return c;
+	if(d<=a && d<=b && d<=c) return d;
+}
+int main(){
+  int a,b,c,d;cin>>a>>b>>c>>d;
+  cout<<(max(a,b,c,d)-min(a,b,c,d));
+  return 0;
+}
+/* 上方C++ main 函式 等同於 下方 C 的 main 函式
+int main(void){
+  int a, b, c, d;
+  scanf("%d %d %d %d", &a, &b, &c, &d);
+  printf("%d",  max(a,b,c,d) - min(a,b,c,d) );
+  return 0;
+}
+*/
+```
+
+## step03-2_請用 Git指令,將程式碼上傳到 GitHub
+
+- 1. Git Bash 裡 cd desktop 進入桌面, git clone https://網址, 再 cd 2022c
+- 2. start . 開檔案總管, 整理 week08 程式
+- 3. git add . 加入帳冊
+- 4.0. git config --global user.email jsyeh@mail.mcu.edu.tw
+- 4.0. git config --global user.name jsyeh
+- 4.1. git commit -m week08
+- 5. git push
