@@ -1515,3 +1515,151 @@ int main(void){
 - 4.0. git config --global user.name jsyeh
 - 4.1. git commit -m week08
 - 5. git push
+
+# Week09
+期中考週
+
+# Week10
+程式設計 2023-04-21 Week10
+1. 考試: 星星等腰三角
+2. LeetCode: 1768. 字串交錯合併
+3. LeetCode: 136. 單一數字
+4. LeetCode: 191. Numbers of 1 Bits
+5. 程式會考題目
+
+# step01-0_考試「星星等腰三角」考前複習、考後講解同學出錯的地方
+
+```cpp
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	
+	for(int i=1; i<=n; i++){
+		//printf("%d\n", i);
+		int star=i*2-1, space=n-i;
+		
+		for(int i=1; i<=space; i++) printf(" ");
+		for(int i=1; i<=star; i++) printf("*");
+		
+		printf("\n");
+	}
+
+}
+```
+
+# step01-1_今天要刷題,先寫LeetCode 1768 字串交錯合併, Easy題 82%通過率很適合我們。先用C語言寫一次。前面的 malloc()是memory allocate準備好memory。有個for迴圈,去試所有的格子。不過因為 word1和word2的長度可能不同, 所以先用 strlen(word1) 及 strlen(word2)得到長度, 再用 if(i<長度) 才做 ans[N++] = word1[i] 的寫法,剛好可以一格格往右。字串結尾 ans[N]=0;
+
+```cpp
+
+//指標就是陣列,陣列就是指標
+char * mergeAlternately(char * word1, char * word2){
+    char * ans = (char*) malloc(201);//準備memory放答案
+
+    int N1 = strlen(word1);
+    int N2 = strlen(word2);
+
+    int N=0;
+    for(int i=0; i<200; i++){
+        if(i<N1) ans[N++] = word1[i];
+        if(i<N2) ans[N++] = word2[i];
+    }
+    ans[N] = 0;//字串結尾
+
+    return ans;
+}
+```
+
+# step01-2_剛剛用C語言寫時, 在 malloc()及字串處理有點麻煩 --- C語言快,但寫起來要注意細節。C++有了 string可以伸縮自如, 寫起來就簡單了。請將LeetCode 1768 字串交錯改用 C++再寫, string ans 宣告字串, 再 ans+= word1[i] 來將字串加到ans的後面。word1.length()是字串的長度
+
+```cpp
+class Solution {
+public:
+    string mergeAlternately(string word1, string word2) {
+        string ans; //這樣就準備好記憶體了,而且伸縮自如
+        for(int i=0; i<100; i++){
+            if(i<word1.length()) ans += word1[i];
+            if(i<word2.length()) ans += word2[i];
+        }
+        return ans;
+    }
+};
+```
+
+# step02-0_介紹下週考試題目, 是簡化版, 在瘋狂程設裡跑
+
+```cpp
+#include <stdio.h>
+#include <string.h>
+char line1[20];
+char line2[20];
+
+int main()
+{
+	scanf("%s%s", line1, line2);
+	int N1=strlen(line1);
+	int N2=strlen(line2);
+	for(int i=0; i<10; i++){
+		if(i<N1) printf("%c", line1[i]);
+		if(i<N2) printf("%c", line2[i]);
+	}
+}
+```
+
+# step02-1_LeetCode 136單一數字,如果要自己寫,有點難想像,只知道有for迴圈、陣列。但這題有奇怪的解法,可以利用XOR運算, 讓相同的數字對消, 最後沒消掉的數字,就是唯一單獨的數字。
+
+```cpp
+int singleNumber(int* nums, int numsSize){
+    int ans=0;
+    for(int i=0; i<numsSize; i++){
+        ans = ans ^ nums[i]; //XOR運算,很神奇,可以把相同的變0,只留下不同的
+    }
+    return ans;
+}
+```
+
+## step02-2_LeetCode 191 Numbers of 1 Bits 要計算數字裡,有幾個1。這是典型的剝皮法可以解,慢慢把皮剝下來, 逐一判斷。
+
+```cpp
+///LeetCode 191: Numbers of 1 Bits 有幾個1
+///使用剝皮法,慢慢把皮剝下來
+int hammingWeight(uint32_t n) {
+    int ans = 0;
+    while(n>0){ ///數字還沒剝完,就繼續做
+        if(n%2==1) ans++; ///剝一層皮,看是不是1
+        n = n / 2; ///數字又變更小了
+    }
+    return ans;
+}
+//剝皮法
+/*1234
+   4
+123
+  3
+12
+ 2
+1
+
+0
+*/
+```
+
+## step03-1_逐題講解、抽問程式設計會考的題目,題目範圍是以大一上教過的程式設計觀念為主, 基礎題用1個觀念、進階題用2個觀念。有些題目雖然是基礎題,但可能接近2個觀念, 所以準備時,要把全部題目都試過,才知道自己有哪些觀念不熟。請以100分當目標
+
+- SOIT106_BASE_001：基礎題：計算幾週與幾天
+- SOIT106_BASE_002：基礎題：找零錢    
+- SOIT106_BASE_003：基礎題：N數之和    
+- SOIT106_BASE_004：基礎題：計程車資計算    
+- SOIT106_BASE_005：基礎題：因數個數    
+- SOIT106_BASE_006：基礎題：三數極大    
+- SOIT106_BASE_007：基礎題：計算商數    
+- SOIT106_BASE_008：基礎題：兩數間可被5整除的整數    
+- SOIT106_BASE_009：基礎題：整數間最大距離    
+- SOIT106_BASE_010：基礎題：找倍數    
+- SOIT106_BASE_011：基礎題：判斷大小    
+- SOIT106_BASE_012：基礎題：整數轉換為等級  
+
+
+106-002 106-12 106-11 108-004 
+106-adv002 106-adv004 108-adv009B 108-adv004
