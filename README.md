@@ -1661,5 +1661,282 @@ int hammingWeight(uint32_t n) {
 - SOIT106_BASE_012：基礎題：整數轉換為等級  
 
 
-106-002 106-12 106-11 108-004 
-106-adv002 106-adv004 108-adv009B 108-adv004
+# Week11
+
+## step01-0_考試「字串交錯」考前複習、考後講解
+
+```cpp
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+	char a[20];
+	char b[20];
+	
+	scanf("%s%s", a, b);
+
+	int N1 = strlen(a);
+	int N2 = strlen(b);
+	
+	for(int i=0; i<10; i++){
+		if(i<N1) printf("%c", a[i] );
+		if(i<N2) printf("%c", b[i] );
+	}
+
+}
+```
+
+## step01-1_介紹 LeetCOde 的Explore探索卡片, 也教大家怎麼偷看別人的程式碼。接下來介紹LeetCode1046 最後的石頭。利用迴圈,找到最大的石頭, 再把那個格子清為0。做兩次,便能找到最大、第二大的石頭。把兩個值相減,便是剩下的石頭, 放回剛剛清為0的 stones[aI] 的那一格。利用大迴圈,重覆做, 直到 拿出來的石頭是0是,便可以離開結束了。
+
+```cpp
+///LeetCode 1046 最後的石頭
+int lastStoneWeight(int* stones, int N)
+{
+    while(1){
+        int a=stones[0], aI=0;
+        for(int i=0; i<N; i++){
+            if(stones[i]>a){
+                a = stones[i];
+                aI = i;
+            }
+        }
+        stones[aI] = 0; //最大的那一格,清為0, 最大值就不見了
+        int b = stones[0], bI=0;
+        for(int i=0; i<N; i++){
+            if(stones[i]>b){//找剩下裡面的最大值
+                b = stones[i];
+                bI = i;
+            }
+        }
+        stones[bI] = 0;//找剩下裡面的最大值, 也不見
+        if(a==0 && b==0) return 0;
+        if(a!=0 && b==0) return a;
+        stones[aI] = a-b; //最大的,撞第二大的,剩下的放回 aI 那一格
+    }
+    return 0;
+}
+    //printf("a: %d b:%d\n", a, b);
+    //結果印出來的 a b 都是 8 .... 要把找出來的石頭的位置,清0
+// 2 7 4 1 8 1
+//   b     a
+// 2 0 4 1 1 1  
+// b   a
+// 0 0 2 1 1 1
+//     a b
+// 0 0 1 0 1 1
+//     a   b
+// 0 0 0 0 0 1
+    //int a = ???;
+    //int b = ???;
+    //(a-b)
+```
+
+## step02-1_今天的第二個程式,是寫LeetCode 205 的字母對應。ASCII有256個字母(其實英文只用到128個字母), 所以建立 char table1[256]={}, table2[256]={}; 兩個對照表, table1[c1]會對到c2, table2[c2]會對到c1。字串長度如果不一樣, 不合格提早結束。 逐字比較時,只要對照表查起來不同, 不合格提早結束。唯一可以動對照表的機會,是如果兩個對照表的對應格子都是0還沒建好表格,就可以建立對照表。
+
+```cpp
+///LeetCode 205 字母對應
+bool isIsomorphic(char * s, char * t){
+    int N1 = strlen(s), N2 = strlen(t);
+    if(N1!=N2) return false; //長度不一樣, 不合格
+
+    char table1[256] = {}; //對照表 c1 => c2
+    char table2[256] = {}; //對照表 c2 => c1
+
+    for(int i=0; i<N1 ; i++) {
+        char c1 = s[i], c2 = t[i];
+        if(table1[c1]==0 && table2[c2]==0){
+            table1[c1] = c2; //兩個都空,可以做對照表
+            table2[c2] = c1;
+        }
+
+        if(table1[c1]!=c2) return false;//不合格
+        if(table2[c2]!=c1) return false;//不合格
+    }
+
+    return true; //合部檢查都合格
+}
+//程式解題,分成5個層次
+//1. 英文看不懂
+//2. 英文就算看懂,但題目還是不懂(翻譯無效(翻譯無效,看input/output會有幫助)
+//3. 了解題目,但不會寫(沒有方向)
+//4. 知道方向,會寫,但寫出來是錯的)
+//5. 寫出來了
+```
+
+## step03-1_介紹LeetCode 258 Add Digits
+
+```cpp
+int addDigits(int num){
+    while(num>=10){
+        int sum = 0;
+        while(num>0){
+            sum = sum + num%10;
+            num = num / 10;
+        }
+        num = sum;
+    }
+    return num;
+}
+```
+
+
+## step03-2_介紹程式設計會考_SOIT106的12題,留4題,會挑1題當下週考試題目
+
+```cpp
+///(SOIT106_BASE_001) 基礎題：計算幾週與幾天 : 一週有7 天，讀入天數，計算該天數是幾週又幾天。
+#include <stdio.h>
+
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	printf("%d %d\n", n/7, n%7);
+
+}
+```
+
+```cpp
+///(SOIT106_BASE_002) 基礎題：找零錢 : 假設有50元、5元和1元等3種硬幣，請輸入一個金額，並顯示等同於該金額所需的最少硬幣組合。
+
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	int n50 = n/50;
+	int n5 = n%50 / 5;
+	int n1 = n%5 ;
+
+	printf("%d=50*%d+5*%d+1*%d\n", n, n50, n5, n1);
+}
+```
+
+
+```cpp
+/// (SOIT106_BASE_003) 基礎題：N數之和 : 輸入一個整數N，之後讀入N個整數，請輸出其和。
+//for loop
+#include <stdio.h>
+int main()
+{
+	int N, a;
+	scanf("%d", &N);
+
+	int sum = 0;
+	for(int i=0; i<N; i++){
+		scanf("%d", &a);
+		sum += a;
+	}
+	printf("%d\n", sum);
+}
+```
+
+
+```cpp
+///(SOIT106_BASE_004) 基礎題：計程車資計算 :
+///輸入里程公尺數，輸出應付的車資。計程車資計算方式為：起跳100 元(2000公尺)，續跳5元(每500公尺)。
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	int ans;
+
+	if(n<=2000) ans = 100;
+	else {
+		if(n%500==0) ans = 100 + (n-2000)/500*5;
+		else ans = 100 + (n-2000)/500*5 + 5;
+		//不整除的時候, 會多跳表一次5元,心很痛
+	}
+	printf("%d\n", ans);
+
+}
+```
+
+
+```cpp
+///(SOIT106_BASE_005) 基礎題：因數個數 : 輸入一個正整數，顯示所有該正整數因數的個數。
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	int ans=0;
+	for(int i=1; i<=n; i++){
+		if( n%i == 0 ) ans ++;
+	}
+
+	printf("%d\n", ans);
+}
+```
+
+
+```cpp
+///(SOIT106_BASE_008) 基礎題：兩數間可被5整除的整數 : 輸入兩個整數，找出兩數之間所有可以被5整除的整數。
+#include <stdio.h>
+int main()
+{
+	int a, b;
+	scanf("%d%d", &a, &b);
+
+	if(a>b){
+		int temp=a;
+		a=b;
+		b=temp;
+	}
+
+	for(int i=a; i<=b; i++){
+		if(i%5==0) printf("%d\n", i);
+	}
+
+}
+```
+
+
+```cpp
+///(SOIT106_BASE_009) 基礎題：整數間最大距離 : 輸入3個相異整數，找出整數間最大的距離。
+#include <stdio.h>
+
+int main()
+{
+	int a, b, c;
+	scanf("%d%d%d", &a, &b, &c);
+
+	int min, max;
+	if(a<=b && a<=c) min = a;
+	if(b<=a && b<=c) min = b;
+	if(c<=a && c<=b) min = c;
+
+	if(a>=b && a>=c) max = a;
+	if(b>=a && b>=c) max = b;
+	if(c>=a && c>=b) max = c;
+
+	printf("%d\n", max-min);
+
+}
+```
+
+
+```cpp
+/// (SOIT106_BASE_012) 基礎題：整數轉換為等級 :
+///輸入一個整數，如果所輸入的整數大於或等於90，則輸出A；
+///如果輸入的整數小於90但大於或等於80則輸出B，
+///如果小於80但大於或等於60，則輸出C；如為其他整數，則輸出F。
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	if(n>=90) printf("A");
+	else if(n>=80) printf("B");
+	else if(n>=60) printf("C");
+	else printf("F");
+
+	printf("\n");
+}
+```
+
