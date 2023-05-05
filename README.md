@@ -1940,3 +1940,362 @@ int main()
 }
 ```
 
+
+
+# Week12
+
+## step01-0_考試_字串交錯, 考前複習、考後講解
+
+```cpp
+///SOIT106_BASE_006) 基礎題：三數極大 :
+/// 輸入三個正整數，輸出其最大值。
+
+#include <stdio.h>
+int main()
+{
+	int a, b, c;
+	scanf("%d%d%d", &a, &b, &c);
+
+	if(a>=b && a>=c) printf("%d\n", a);
+	else if(b>=a && b>=c) printf("%d\n", b);
+	else if(c>=a && c>=b) printf("%d\n", c);
+
+}
+```
+
+```cpp
+///(SOIT106_BASE_007) 基礎題：計算商數 :
+///輸入兩個整數a，b，輸出a除以b的商。
+
+#include <stdio.h>
+int main()
+{
+
+	int a, b;
+	scanf("%d%d", &a, &b);
+
+	printf("%d\n", a/b);
+}
+```
+
+
+```cpp
+///(SOIT106_BASE_010) 基礎題：找倍數 :
+///連續讀入10個整數(1 – 1000)，找出所讀入的整數有幾個是3的倍數。
+#include <stdio.h>
+int main()
+{
+	int ans=0;
+	int n;
+	for(int i=0; i<10; i++){
+		scanf("%d", &n);
+		if(n%3==0) ans++;
+	}
+	printf("%d\n", ans);
+}
+```
+
+
+```cpp
+///(SOIT106_BASE_011) 基礎題：判斷大小 :
+///輸入2個整數，如果第一個數字比第二個數字小；
+///則出輸-1，如果兩個數字相等，則輸出0；
+///如果第一個數字比第二數字大，則出輸1。
+
+#include <stdio.h>
+int main()
+{
+	int a, b;
+	scanf("%d%d", &a, &b);
+
+	if(a==b) printf("0\n");
+	else if(a>b) printf("1\n");
+	else if(a<b) printf("-1\n");
+
+}
+```
+
+
+```cpp
+///SOIT106_BASE_006) 基礎題：三數極大 :
+/// 輸入三個正整數，輸出其最大值。
+
+#include <stdio.h>
+int main()
+{
+	int a, b, c;
+	scanf("%d%d%d", &a, &b, &c);
+
+	if(a>=b && a>=c) printf("%d\n", a);
+	else if(b>=a && b>=c) printf("%d\n", b);
+	else if(c>=a && c>=b) printf("%d\n", c);
+
+}
+```
+
+
+## step01-1_因為班代找到一個好笑的影片, 兩個人裙子,不需要第三個變數。所以老師把第10週的LeetCode136單一數字,再拿出來講。接下來要介紹XOR的特別技巧,可以不用第三個變數,就把兩個數字交換。請想像 XOR 可以把兩個靈魂放在同一個變數裡。所以 a^=b; b^=a; a^=b; 就神奇的交換靈魂了。
+
+```cpp
+#include <stdio.h>
+int main()
+{
+    int a=99, b=33;
+    printf("%d %d\n", a, b);
+    ///int temp=a;
+    ///a=b;
+    ///b=temp;
+    a ^= b; /// a = a ^ b; a裡現在有(a b) 2個靈魂 a b
+    b ^= a; /// b = b ^ a; 意思是 (b (a b)) 3靈魂,消掉b,剩a
+    a ^= b; /// a = a ^ b; ((a b) a) 消掉a, 剩下 b
+
+    printf("%d %d\n", a, b);
+}
+```
+
+## step02-1_今天LeetCode每日挑戰,是1456母音有幾個,母音包含 a e i o u, 給你限制k的長度,請問在這個長度裡, 最多有幾個母音。這題不能用暴力法,因為迴圈10萬x10萬=100億,太久了。可以用陣列來存母音的累積數目, a[i] - a[i-k] 減出範圍內的母音數目。
+
+```cpp
+//LeetCode 1456. Maximum Number of Vowels in a Substring of Given Length
+int maxVowels(char * s, int k){
+    char vowel[5]={'a','e','i','o','u'};
+
+    int ans=0, len=0;
+    int N = strlen(s);
+    for(int i=0; i<N; i++){
+        if( s[i]=='a' || s[i]=='e' || s[i]=='i' || s[i]=='o' || s[i]=='u' ){
+            len++;
+        }else{
+            if(len>ans) ans = len;
+            len=0;
+        }
+    }
+    if(len>ans) ans = len;
+    if(ans>k) return k;
+    else return ans;
+}
+```
+
+## step02-2_LeetCode 451要照字母頻率印出, 要準備好 26+26+10共62格的陣列, 來放統計數字 & 對應的字母。先用for迴圈,把每個出現的字母都統計在 H[c-'A]++ 或 H[c-'a'+26]++ 或 H[c-'0'+52]++ 裡面。再把 62格做排序, 交換時要同時換字母、數字。最後照著字母頻率,把字母塞回去。
+
+```cpp
+//LeetCode 451. Sort Characters By Frequency
+char * frequencySort(char * s){ //LeetCode 451ダ繵瞯
+    int N = strlen(s);
+    int H[62]={};//糶26,糶26,计10,–常瞷0Ω
+    char alphabet[62];//参璸计,癸莱ダ
+    for(int i=0; i<26; i++) alphabet[i] = 'A'+i;
+    for(int i=0; i<26; i++) alphabet[i+26] = 'a'+i;
+    for(int i=0; i<10; i++) alphabet[i+26+26] = '0'+i;
+    //参璸–ダ瞷Ω计
+    for(int i=0; i<N; i++){
+        char c = s[i];
+        if(c>='A' && c<='Z') H[c-'A']++;//1Ω
+        if(c>='a' && c<='z') H[c-'a'+26]++;//磷秨玡26糶
+        if(c>='0' && c<='9') H[c-'0'+52]++;//磷秨玡26+26糶
+    } //璶逼
+    for(int i=0; i<62; i++){
+        for(int j=i+1; j<62; j++){
+            if(H[i]<H[j]){ //辨, ┮オ娩,碞璶ユ传
+                int temp=H[i];
+                H[i] = H[j];
+                H[j] = temp;
+                char c = alphabet[i];
+                alphabet[i] = alphabet[j];
+                alphabet[j] = c;
+            }
+        }
+    }
+    int len=0;
+    for(int i=0; i<62; i++){
+        for(int k=0; k<H[i]; k++) s[len++] = alphabet[i];
+    }
+    return s;
+}
+```
+
+## step03-1_程式會考考題逐題講解
+
+```cpp
+//(SOIT106_ADVANCE_001) 進階題：反序數字
+// : 輸入1個正整數，將該整數所有數字反序排列後組成一個的新整數，
+//計算出兩者相加的結果。
+
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	int n2 = n; //another backup
+
+	int ans = 0;
+	while(n>0){
+		ans = ans*10 + n%10;
+		n = n / 10;
+	}
+
+	printf("%d+%d=%d\n", n2, ans, n2+ans);
+}
+```
+
+```cpp
+// (SOIT106_ADVANCE_002) 進階題：分式化簡 :
+// 輸入分式的分子及分母(分母不可為0)，將其化簡後的分式輸出。
+#include <stdio.h>
+int main()
+{
+	int a, b;
+	scanf("%d%d", &a, &b);
+
+	int ans;
+	for(int i=1; i<=a; i++){
+		if(a%i==0 && b%i==0) ans = i; //good!!!
+	}
+
+	printf("%d %d\n", a/ans, b/ans);
+}
+```
+
+```cpp
+//SOIT106_ADVANCE_003) 進階題：
+//讀入整數反序列印 : 設計一個程式，該程式可以連續讀入正整數(輸入0表示結束，至多不超過10個正整數)，之後將所輸入的正整數以相反序顯示在畫面上。
+
+#include <stdio.h>
+int main()
+{
+	int N;
+	int a[20];
+	for(int i=0; i<20; i++){
+		scanf("%d", &a[i] );
+		if(a[i]==0){ //ouch!!
+			N = i;
+			break;
+		}
+	}
+
+	for(int i=N-1; i>=0; i--){
+		printf("%d ", a[i] );
+	}
+	printf("\n");
+}
+```
+
+
+```cpp
+//(SOIT106_ADVANCE_004) 進階題：大小寫轉換 :
+//讀入一個字串(至多10個字元)，將字串中的大小寫英文字母相互轉換
+//(大寫轉為小寫，小寫轉為大寫)後輸出。
+
+#include <stdio.h>
+int main()
+{
+	char line[20];
+	scanf("%s", line);
+
+	for(int i=0; line[i]!=0; i++){
+		char c = line[i];
+		if(c>='A' && c<='Z') line[i]=c-'A'+'a';
+		if(c>='a' && c<='z') line[i]=c-'a'+'A';
+	}
+	printf("%s\n", line);
+}
+```
+
+
+```cpp
+//(SOIT106_ADVANCE_004) 進階題：大小寫轉換 :
+//讀入一個字串(至多10個字元)，將字串中的大小寫英文字母相互轉換
+//(大寫轉為小寫，小寫轉為大寫)後輸出。
+#include <stdio.h>
+int main()
+{
+	char c;
+	while( scanf("%c", &c)==1 ){
+		if(c>='A' && c<='Z') c = c-'A'+'a';
+		else if(c>='a' && c<='z') c = c-'a'+'A';
+
+		printf("%c", c);
+	}
+}
+```
+
+
+```cpp
+//(SOIT106_ADVANCE_005_C) 進階題：A的B次方函數 :
+#include <stdio.h>
+
+int MYPOWER(int a, int b)
+{
+	int ans=1;
+	for(int i=1; i<=b; i++){
+		ans = ans * a;
+	}
+	return ans;
+}
+
+
+int main(void)
+{
+	int a,b;
+	scanf("%d%d",&a,&b);
+	printf("[%d]",MYPOWER(a,b));
+	return 0;
+}
+```
+
+
+```cpp
+//(SOIT106_ADVANCE_006) 進階題：漸增數列相加 :
+//輸入正整數n，計算1*2+2*3+3*4+…+(n-1)*n之和。
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	int ans=0;
+	for(int i=1; i<n; i++){
+		ans += i * (i+1);
+	}
+	printf("%d\n", ans);
+}
+```
+
+
+```cpp
+//(SOIT106_ADVANCE_007) 進階題：迴文判斷 :
+//題目內容：從鍵盤讀入1個4位數的整數(1000-9999)。
+//如果該數字構成廻文(即由左而右，由右而左，順序相同)，則顯示YES。如果該數字未構成廻文，則顯示NO。
+#include <stdio.h>
+int main()
+{
+	char line[20];
+	scanf("%s", line);
+
+	if(line[0]==line[3] && line[1]==line[2]) printf("YES\n");
+	else printf("NO\n");
+
+}
+```
+
+```cpp
+//(SOIT106_ADVANCE_007) 進階題：迴文判斷 :
+//題目內容：從鍵盤讀入1個4位數的整數(1000-9999)。
+//如果該數字構成廻文(即由左而右，由右而左，順序相同)，則顯示YES。如果該數字未構成廻文，則顯示NO。
+
+#include <stdio.h>
+int main()
+{
+	char c1, c2, c3, c4;
+
+	scanf("%c%c%c%c", &c1, &c2, &c3, &c4);
+
+	if(c1==c4 && c2==c3) printf("YES\n");
+	else printf("NO\n");
+
+}
+```
+
+
+
