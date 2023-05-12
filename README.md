@@ -2298,4 +2298,444 @@ int main()
 ```
 
 
+# Week13
 
+## step01-0_考試考前複習、考後講解
+
+```cpp
+///(SOIT106_ADVANCE_001) 進階題：反序數字 :
+/// 輸入1個正整數，將該整數所有數字反序排列後組成一個的新整數，
+//計算出兩者相加的結果。
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	int n2 = n;
+
+	int ans = 0;
+	while(n>0){
+		ans = ans * 10 + n%10;
+		n = n / 10;
+	}
+
+	printf("%d+%d=%d\n", n2, ans, n2+ans);
+}
+```
+
+```cpp
+//(SOIT106_ADVANCE_002) 進階題：
+//分式化簡 : 輸入分式的分子及分母(分母不可為0)，
+//將其化簡後的分式輸出。
+
+#include <stdio.h>
+
+int main()
+{
+	int a, b;
+	scanf("%d%d", &a, &b);
+
+	int ans;
+	for(int i=1; i<=a; i++){
+		if(a%i==0 && b%i==0) ans = i;
+	}
+	printf("%d %d\n", a/ans, b/ans);
+
+}
+```
+
+```cpp
+//(SOIT106_ADVANCE_006) 進階題：
+//漸增數列相加 : 輸入正整數n，計算1*2+2*3+3*4+…+(n-1)*n之和。
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	int ans=0;
+	for(int i=1; i<n; i++){
+		ans += i*(i+1);
+	}
+	printf("%d\n", ans);
+}
+```
+
+## step01-1_超簡單題_LeetCode 1572 對角線加起來, 老師分成3個部分來理解, 分別是簡單的對角線用 mat[i][i] 加起來就好, 難一點的反過來對角線要 mat[i][N-1-i], 最後要把奇數時重覆的中間那個扣掉。
+
+```cpp
+///LeetCode 1572 對角線sum, 中間不能重覆加哦!
+int diagonalSum(int** mat, int matSize, int* matColSize){
+    int N = matSize; //希望用比較短的變數, 比較好寫
+
+    int sum = 0;
+    for(int i=0; i<N; i++){
+        sum += mat[i][i];  //簡單的對角線
+        sum += mat[i][N-1-i]; //反過來的對角線
+    }
+    if(N%2==1) sum -= mat[N/2][N/2]; //會重覆的奇數, 扣回來
+    return sum;
+}
+```
+
+
+## step02-1_會考題庫刷題, 將SOIT106進階題08,09,10,11,12, 用練習模式刷完
+
+```cpp
+//(SOIT106_ADVANCE_007) 進階題：迴文判斷 : 題目內容：從鍵盤讀入1個4位數的整數(1000-9999)。
+//如果該數字構成廻文(即由左而右，由右而左，順序相同)，則顯示YES。如果該數字未構成廻文，則顯示NO。 
+#include <stdio.h>
+int main()
+{
+	char line[20];
+	scanf("%s", line);
+	
+	if(line[0]==line[3] && line[1]==line[2]) printf("YES\n");
+	else printf("NO\n");
+
+}
+```
+
+```cpp
+//(SOIT106_ADVANCE_008_C) 進階題：絕對值函數 :
+#include <stdio.h>
+int f(int n)
+{
+	if(n<0) return -n;
+	else return n;
+}
+
+int main(void)
+{
+	int n;
+	scanf("%d",&n);
+	printf("[%d]",f(n));
+	return 0;
+}
+```
+
+```cpp
+//(SOIT106_ADVANCE_008_C) 進階題：絕對值函數 :
+#include <stdio.h>
+int f(int n)
+{
+	//if(n>0) return n;
+	//else return -n;
+
+	return n>0 ? n : -n ;
+}
+int main(void)
+{
+	int n;
+	scanf("%d",&n);
+	printf("[%d]",f(n));
+	return 0;
+}
+```
+
+```cpp
+//(SOIT106_ADVANCE_009) 進階題：函數反序排列數字 :
+//設計一個函數f(n)，該函數可以傳回整數n的數字反序排列所組成的整數。
+
+#include <stdio.h>
+int f(int n)
+{
+	int ans = 0;
+	while(n>0){
+		ans = ans * 10 + n%10;
+		n = n / 10;
+	}
+	return ans;
+}
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	printf("%d\n", f(n) );
+}
+```
+
+```cpp
+//(SOIT106_ADVANCE_009) 進階題：
+//函數反序排列數字 : 設計一個函數f(n)，
+//該函數可以傳回整數n的數字反序排列所組成的整數。
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+
+	int ans = 0;
+	while(n>0){
+		ans = ans * 10 + n%10;
+		n = n / 10;
+	}
+	printf("%d\n", ans);
+}
+```
+```cpp
+//(SOIT106_ADVANCE_010) 進階題：計算陣列的平方值 :
+// 輸入一個整數N，再依序輸入N個整數置於陣列中，計算各元素的平方值，再列出此算出平方值後的陣列。
+
+#include <stdio.h>
+int main()
+{
+	int n, a;
+	scanf("%d", &n);
+
+	for(int i=0; i<n; i++){
+		scanf("%d", &a);
+		printf("%d,", a*a);
+	}
+	printf("\n");
+}
+```
+
+```cpp
+//(SOIT106_ADVANCE_011) 進階題：2進位轉10進位 : 
+//讀入一個0000 ~ 1111的2進位整數(固定4位數)，請顯示出對應的10進位數字。
+#include <stdio.h>
+int main()
+{
+	char c1, c2, c3, c4;
+	scanf("%c%c%c%c", &c1, &c2, &c3, &c4);
+
+	int ans = 0;
+	if(c1=='1') ans += 8;
+	if(c2=='1') ans += 4;
+	if(c3=='1') ans += 2;
+	if(c4=='1') ans += 1;
+
+	printf("%d\n", ans);
+}
+```
+
+```cpp
+//(SOIT106_ADVANCE_012) 進階題：
+//陣列找出現次數 : 讀入一個正整數的數列(逐一輸入正整數，輸入0表示結束，數
+#include <stdio.h>
+int main()
+{
+	int a[20];
+	int N=0;
+	for(int i=0; i<20; i++){
+		scanf("%d", &a[i] );
+		if( a[i] == 0 ){
+			N = i;
+			break;
+		}
+	}
+
+	int next;
+	scanf("%d", &next);
+
+	int ans = 0;
+	for(int i=0; i<N; i++){
+		if(a[i]==next) ans++;
+	}
+	printf("%d\n", ans);
+}
+```
+## step02-2_會考題庫刷題, 將SOIT108基礎題01,03,03A,04,05, 用練習模式刷完
+
+
+```cpp
+// (SOIT108_Base_001) 基礎題：找千位數 :
+//讀入 1000 - 100000 的數字，找出其千位數的數字
+
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	int ans = n/1000 %10;
+	printf("%d", ans);
+}
+```
+
+```cpp
+// (SOIT108_Base_003) 基礎題：正整數平方總和 :
+// 題目內容：輸入正整數n，可計算：1*1+2*2+...+n*n 之總和的結果。數字範圍：整數1~1000
+
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	int ans = 0;
+	for(int i=1; i<=n; i++){
+		ans += i*i;
+	}
+	printf("%d", ans);
+}
+```
+
+```cpp
+// SOIT108_Base_003A：進階題：兩數之間的3倍數總和 
+
+#include <stdio.h>
+int main()
+{
+	int a, b;
+	scanf("%d%d", &a, &b);
+
+	int ans = 0;
+	for(int i=a; i<=b; i++){
+		if(i%3==0) ans += i;
+	}
+	printf("%d", ans);
+}
+```
+
+```cpp
+//(SOIT108_Base_004) 基礎題：判斷座標的象限 :
+// 題目內容：判斷所輸入座標(x,y)的所在象限，
+//(僅考慮在四個象限的情況，不考慮在軸線及原點的情況)。
+//{ex.(1,1)屬第一象限、(-1,1)屬第二象限、(-1,-1)屬第三象限、(1,-1)屬第四象限}
+//數字範圍：整數 -1000~1000
+
+#include <stdio.h>
+int main()
+{
+	int x, y;
+	scanf("%d%d", &x, &y);
+
+	if(x>0 && y>0) printf("1\n");
+	if(x<0 && y>0) printf("2\n");
+	if(x<0 && y<0) printf("3\n");
+	if(x>0 && y<0) printf("4\n");
+
+}
+```
+
+```cpp
+//(SOIT108_Base_005) 基礎題：輸入n (n>0)， 求n之所有因數和 : 
+//輸入n (n>0)， 求 n之所有因數和。{ex. 2之因數為1、2，因數和為因數加總1+2=3}  
+
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+	
+	int ans = 0;
+	for(int i=1; i<=n; i++){
+		if(n%i==0) ans += i;
+	}
+	printf("%d", ans);
+}
+```
+
+
+
+## step03-1_會考題庫刷題, 將SOIT108基礎題06,07,08,10,11, 用練習模式刷完
+
+```cpp
+//(SOIT108_Base_006) 基礎題：輸入西元y年，判斷該y年是否為閏年 :
+//輸入西元y年，判斷該y年是否為閏年，輸出相對訊息。
+//{閏年定義：西元年份除以4可整除，且除以100不可整除，為閏年。
+//西元年份除以100可整除，且除以400不可整除，為平年}
+
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	int leap = 0;
+	if(n%400==0) leap = 1;
+	else if(n%100==0) leap = 0;
+	else if(n%4==0) leap = 1;
+	else leap =0;
+
+	if(leap==1) printf("%d is a leap year.\n", n);
+	else printf("%d is not a leap year.\n", n);
+}
+```
+
+
+```cpp
+//(SOIT108_Base_007) 基礎題：把數字倒著印出來 :
+//題目內容：輸入10個整數，把這10個數字倒著印出來。
+//數字範圍：整數1 – 100
+
+#include <stdio.h>
+int main()
+{
+	int a[10];
+
+	for(int i=0; i<10; i++){
+		scanf("%d", &a[i] );
+	}
+	for(int i=10-1; i>=0; i--){
+		printf("%d ", a[i] );
+	}
+}
+```
+
+```cpp
+// (SOIT108_Base_008) 基礎題：區間測速 :
+//題目內容：龜山區萬壽路1段裝設區間測速器，長度1.2公里，
+//輸入1個整數(車輛通過該區間所行駛的秒數)，
+//輸出它的時速印出來(只印整數部分，小數部分無條件捨去)。
+//(時速的單位是每小時幾公里( km/hour)。
+//1小時有60分鐘，1分鐘有60秒，輸入的是秒數) 數字範圍：整數1 – 1000
+
+#include <stdio.h>
+int main()
+{
+	int n;
+	scanf("%d", &n);
+
+	int ans = 60*60*1.2/n;
+	printf("%d", ans);
+
+}
+```
+
+```cpp
+//(SOIT108_Base_010) 基礎題：水杯接水 :
+//題目內容：有一桶水要分裝到杯子中，
+//水桶中的水有N毫升，杯子的容量為M毫升，
+//請問至少需要幾個杯子才能承接水桶裡的水。
+//現在輸入N與M，請輸出答案。數字範圍：N為1 – 9999，M為1 –99
+
+#include <stdio.h>
+int main()
+{
+	int water, cup;
+	scanf("%d%d", &water, &cup);
+
+	int ans = water/cup;
+
+	if(water%cup>0) ans++;
+
+	printf("%d", ans);
+
+}
+```
+
+```cpp
+//(SOIT108_Base_011) 基礎題：平面兩座標的面積 :
+// 題目名稱：平面兩座標的面積 (題目修改) (BACIC) 題目內容：
+// 輸入平面兩點座標的四個整數值(x1,y1,x2,y2)，
+//計算並顯示這兩點所圍之面積。(EX.輸入(x1,y1,x2,y2)，計算(x1,y1)、(x1,y2)、(x2,y2)、(x2,y1)所圍面積。)
+
+#include <stdio.h>
+int main()
+{
+	int a, b, c, d;
+	scanf("%d%d%d%d", &a, &b, &c, &d);
+
+	int ans = (a-c) * (b-d);
+
+	if(ans<0) ans = - ans;
+
+	printf("%d", ans);
+
+}
+```
