@@ -4,7 +4,7 @@ void setup(){
   size(600,600);
   mario = loadImage("mario.png");
   princess = loadImage("princess.jpg");
-}
+} 
 void draw(){
   background(255);//白色的背景
   image(mario, 0, 80, 250,300);//適當的大小,不要太肥
